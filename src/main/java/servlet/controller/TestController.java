@@ -18,6 +18,11 @@ public class TestController {
 	public String test(Model model) {
 		model.addAttribute("apiKey", util.getApiKey());
 		model.addAttribute("domain", util.getApiDomain());
+		try {
+      model.addAttribute("sdList", util.sdAPI());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
 		return "test";
 	}
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration>
-	
 	<properties>
 		<property name="name">log</property>
 		<property name="pattern">%d{yyyy-MM-dd HH:mm:ss.SSS} | %-5.5p | %-30.30C::%-30.30M:%-5.5L | %msg%n</property>
@@ -63,15 +62,13 @@
 		</Logger>
 		
 		<!-- 결과 TABLE 형태로 출력 -->
-		<!-- 
 		<Logger name="jdbc.resultsettable" level="ERROR" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
-		 -->
+
 		<Logger name="org.springframework" level="INFO" additivity="false">
 			<AppenderRef ref="console" />
 		</Logger>
-		
 		
 		<!-- ===================================== -->
 		<!-- Possible Log Levels:                  -->
