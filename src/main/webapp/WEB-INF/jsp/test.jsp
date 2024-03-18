@@ -112,6 +112,41 @@
                 error : function(xhr, stat, err) {}
             });
             });
+            
+            $("#sggList").on("change", function() {
+            	let sggAdmCode = $(this).val();
+              
+            let data = {};
+            data.key = "${apiKey}"; /* key */
+            data.domain = "${domain}"; /* domain */
+            data.admCode = sggAdmCode;
+            data.format = "json"; /* 응답결과 형식(json) */
+            data.numOfRows = "200"; /* 검색건수 (최대 1000) */
+            data.pageNo = "1"; /* 페이지 번호 */
+            
+            $.ajax({
+                type : "get",
+                dataType : "jsonp",
+                url : "http://api.vworld.kr/ned/data/admDongList",
+                data : data,
+                async : false,
+                success : function(data) {
+                    //console.log(data);
+                    $('.bjdOption').remove();
+                    $('#bjdList').append($('<option class="bjdOption" value="0">--읍, 면, 동 선택--</option>'));
+                    let sggAdm = data.admVOList.admVOList;
+                    //console.log(adm[0].lowestAdmCodeNm);
+                    for (let i = 0; i < sggAdm.length; i++) {
+                    let bjdHtml = $("<option></option>");
+                    bjdHtml.attr('value', sggAdm[i].admCode);
+                    bjdHtml.attr('class', 'bjdOption');
+                    bjdHtml.append(sggAdm[i].lowestAdmCodeNm);
+                    $('#bjdList').append(bjdHtml);
+                    }
+                },
+                error : function(xhr, stat, err) {}
+            });
+            });
           });
 </script>
 </head>
@@ -130,6 +165,9 @@
 				</select>
 				<select id="sggList">
 					<option class="sggOption" value="0">--시, 군, 구 선택--</option>
+				</select>
+				<select id="bjdList">
+					<option class="bjdOption" value="0">--읍, 면, 동 선택--</option>
 				</select>
 			</div>
 		</div>
