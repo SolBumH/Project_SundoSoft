@@ -77,7 +77,41 @@
 
             // map.addLayer(bjdLayer); // 맵 객체에 레이어를 추가함
             map.addLayer(sdLayer);
-
+					
+            $("#sdList").on("change", function() {
+            	let admCode = $(this).val();
+              
+            let data = {};
+            data.key = "${apiKey}"; /* key */
+            data.domain = "${domain}"; /* domain */
+            data.admCode = admCode;
+            data.format = "json"; /* 응답결과 형식(json) */
+            data.numOfRows = "100"; /* 검색건수 (최대 1000) */
+            data.pageNo = "1"; /* 페이지 번호 */
+            
+            $.ajax({
+                type : "get",
+                dataType : "jsonp",
+                url : "http://api.vworld.kr/ned/data/admSiList",
+                data : data,
+                async : false,
+                success : function(data) {
+                    //console.log(data);
+                    $('.sggOption').remove();
+                    $('#sggList').append($('<option class="sggOption" value="0">--시, 군, 구 선택--</option>'));
+                    let adm = data.admVOList.admVOList;
+                    //console.log(adm[0].lowestAdmCodeNm);
+                    for (let i = 0; i < adm.length; i++) {
+                    let sggHtml = $("<option></option>");
+                    sggHtml.attr('value', adm[i].admCode);
+                    sggHtml.attr('class', 'sggOption');
+                    sggHtml.append(adm[i].lowestAdmCodeNm);
+                    $('#sggList').append(sggHtml);
+                    }
+                },
+                error : function(xhr, stat, err) {}
+            });
+            });
           });
 </script>
 </head>
@@ -89,10 +123,13 @@
 		<div>
 			<div>
 				<select id="sdList">
-					<option>--시, 도 선택--</option>
+					<option value="0">--시, 도 선택--</option>
 					<c:forEach items="${sdList }" var="sd">
-					  <option value="${sd.admCode }">${sd.admCodeNm }</option>
+						<option value="${sd.admCode }">${sd.admCodeNm }</option>
 					</c:forEach>
+				</select>
+				<select id="sggList">
+					<option class="sggOption" value="0">--시, 군, 구 선택--</option>
 				</select>
 			</div>
 		</div>
