@@ -3,29 +3,25 @@ package servlet.controller;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import servlet.util.APIUtil;
 
-@Controller
+@RestController
 public class RestFullController {
 
 	@Autowired
 	private APIUtil apiUtil;
 
-	@ResponseBody
 	@RequestMapping(value = "/sdAPI.do", method = RequestMethod.GET)
 	public JSONArray sdAPI(Model model) throws Exception {
 		System.out.println("sdAPI 시작");
