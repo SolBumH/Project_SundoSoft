@@ -28,10 +28,10 @@
 $(document).ready(function() {
 	let map = new ol.Map({ // OpenLayer의 맵 객체를 생성한다.
 		target : 'map', // 맵 객체를 연결하기 위한 target으로 <div>의 id값을 지정해준다.
-		layers : [ // 지도에서 사용 할 레이어의 목록을 정희하는 공간이다.
+		layers : [ // 지도에서 사용 할 레이어의 목록을 정의하는 공간이다.
 			new ol.layer.Tile({
 				source : new ol.source.OSM({
-					url : 'http://api.vworld.kr/req/wmts/1.0.0/${apiKey}/midnight/{z}/{y}/{x}.png'
+					url : 'http://api.vworld.kr/req/wmts/1.0.0/${apiKey}/Base/{z}/{y}/{x}.png'
 					// url: 'https://maps.wikimedia.org/osm-intl/{z}/{x}/{y}.png' // vworld의 지도를 가져온다.
 				})
 			}) ],
@@ -41,40 +41,6 @@ $(document).ready(function() {
 			})
 		});
 		
-		let bjdLayer = new ol.layer.Tile({
-			source : new ol.source.TileWMS({
-				url : 'http://localhost:8080/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
-				params : {
-					'VERSION' : '1.1.0', // 2. 버전
-					'LAYERS' : 'solbum:tl_bjd', // 3. 작업공간:레이어 명
-					'BBOX' : [ 1.3873946E7, 3906626.5, 1.4428045E7, 4670269.5 ],
-					'SRS' : 'EPSG:3857', // SRID
-					'FORMAT' : 'image/png' // 포맷
-				},
-				serverType : 'geoserver',
-			})
-		});
-
-		//let cql_filter = "sd_cd='11'";
-		let sdLayer = new ol.layer.Tile({
-			source : new ol.source.TileWMS({
-			url : 'http://localhost:8080/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
-			params : {
-				'VERSION' : '1.1.0', // 2. 버전
-				'LAYERS' : 'solbum:tl_sd', // 3. 작업공간:레이어 명
-				/* 'BBOX' : [1.3873946E7, 3906626.5, 1.4428045E7, 4670269.5], */
-				'BBOX' : [ 1.3871489341071218E7, 3910407.083927817, 1.4680011171788167E7, 4666488.829376997 ],
-				'SRS' : 'EPSG:3857', // SRID
-				'FORMAT' : 'image/png' // 포맷
-				//'CQL_FILTER' : cql_filter
-			},
-			serverType : 'geoserver',
-			})
-		});
-
-		// map.addLayer(bjdLayer); // 맵 객체에 레이어를 추가함
-		// map.addLayer(sdLayer);
-
 		$("#sdList").on("change", function() {
 			let admCode = $(this).val();
 			if (admCode != 0) {
@@ -163,6 +129,8 @@ $(document).ready(function() {
 		  let sdValue = document.getElementById('sdList').options[document.getElementById('sdList').selectedIndex].value;
 		  let sggValue = document.getElementById('sggList').options[document.getElementById('sggList').selectedIndex].value;
 		  let bjdValue = document.getElementById('bjdList').options[document.getElementById('bjdList').selectedIndex].value;
+		  //map.removeLayer(sggLayer);
+		  //map.removeLayer(bjdLayer);
 		  // alert(bjdOption.options[bjdOption.selectedIndex].value);
 		  // alert("sd : " + sdValue + "\nsgg : " + sggValue + "\nbjd : " + bjdValue);
 		  if (bjdValue == 0) { // 법정동이 선택이 안됐으면
@@ -190,12 +158,40 @@ $(document).ready(function() {
 		      }
 		    } else {
 		      // 시군구 else
-		        
+		      let sggLayer = new ol.layer.Tile({
+					source : new ol.source.TileWMS({
+					url : 'http://localhost:8080/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
+					params : {
+						'VERSION' : '1.1.0', // 2. 버전
+						'LAYERS' : 'solbum:tl_sgg', // 3. 작업공간:레이어 명
+						'BBOX' : [ 1.3873946E7, 3906626.5, 1.4428045E7, 4670269.5 ],
+						'SRS' : 'EPSG:3857', // SRID
+						'FORMAT' : 'image/png', // 포맷
+						'CQL_FILTER' : 'sgg_cd=' + sggValue
+					},
+					serverType : 'geoserver',
+					})
+				});
+		    map.addLayer(sggLayer);
 		      // end 시군구 else
 		    }
 		  } else {
 		    // 법정동 else
-		      
+		    let bjdLayer = new ol.layer.Tile({
+					source : new ol.source.TileWMS({
+					url : 'http://localhost:8080/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
+					params : {
+						'VERSION' : '1.1.0', // 2. 버전
+						'LAYERS' : 'solbum:tl_bjd', // 3. 작업공간:레이어 명
+						'BBOX' : [ 1.3873946E7, 3906626.5, 1.4428045E7, 4670269.5 ],
+						'SRS' : 'EPSG:3857', // SRID
+						'FORMAT' : 'image/png', // 포맷
+						'CQL_FILTER' : 'bjd_cd=' + bjdValue
+					},
+					serverType : 'geoserver',
+					})
+				});
+		    map.addLayer(bjdLayer);
 		    // end 법정동 else
 		  }
 		});
