@@ -1,11 +1,10 @@
 package servlet.controller;
 
-import javax.servlet.annotation.MultipartConfig;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import servlet.impl.TestService;
 
@@ -17,8 +16,13 @@ public class Test {
 
   @RequestMapping(value = "/uploadTest.do")
   public String uploadTest() {
-    testService.dbTest();
     String asd = "1234567";
     return "testUpload";
+  }
+  
+  @RequestMapping(value = "/uploadTest.do", method = RequestMethod.POST)
+  public @ResponseBody String dbUpload() {
+    int result = testService.dbTest();
+    return "";
   }
 }

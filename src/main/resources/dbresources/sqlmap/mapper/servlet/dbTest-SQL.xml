@@ -43,4 +43,12 @@
 		  , #{list.usage})
 		</foreach>
 	</insert>
+	
+	<insert id="dbTest4" parameterType="list">
+		insert into "TB_CARBON_B5" ("sggCode", "bjdCode", "usage")
+		values 
+		<foreach collection="list" item="list" index="index" separator=",">
+		  (#{list.sggCode}, #{list.bjdCode}, #{list.usage})
+		</foreach>
+	</insert>
 </mapper>

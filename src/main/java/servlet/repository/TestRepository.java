@@ -13,7 +13,7 @@ public class TestRepository {
   @Autowired
   private SqlSession sqlSession;
 
-  public void dbTest(List<Map<String, Object>> list) {
-    sqlSession.insert("dbTest.dbTest3", list);
+  public int dbTest(List<Map<String, Object>> list) {
+    return sqlSession.insert("dbTest.dbTest4", list);
   }
 }

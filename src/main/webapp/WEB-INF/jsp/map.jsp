@@ -186,8 +186,8 @@ $(document).ready(function() {
 					url : 'http://localhost/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
 					params : {
 						'VERSION' : '1.1.0', // 2. 버전
-						'LAYERS' : 'solbum:tl_bjd', // 3. 작업공간:레이어 명
-						'BBOX' : [ 1.3873946E7, 3906626.5, 1.4428045E7, 4670269.5 ],
+						'LAYERS' : 'solbum:TB_CARBON_B5_BJD_VIEW', // 3. 작업공간:레이어 명
+						'BBOX' : [1.387148932991382E7,3910407.083927817,1.46800091844669E7,4666488.829376992],
 						'SRS' : 'EPSG:3857', // SRID
 						'FORMAT' : 'image/png', // 포맷
 						'CQL_FILTER' : 'bjd_cd=' + bjdValue
