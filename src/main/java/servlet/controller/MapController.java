@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import servlet.util.APIUtil;
 
 @Controller
-public class TestController {
+public class MapController {
 
 	@Autowired
 	private APIUtil util;
 	
-	@RequestMapping(value = "/test.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/map.do", method = RequestMethod.GET)
 	public String test(Model model) {
 		model.addAttribute("apiKey", util.getApiKey());
 		model.addAttribute("domain", util.getApiDomain());
@@ -23,6 +23,6 @@ public class TestController {
     } catch (Exception e) {
       e.printStackTrace();
     }
-		return "test";
+		return "map";
 	}
 }

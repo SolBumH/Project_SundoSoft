@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dbTest">
+	<insert id="dbTest" parameterType="list">
+		insert into "TB_CARBON_B5" ("yearMonthUse", "landLocation", "roadLandLocation", 
+		"sggCode", "bjdCode", "landCode", bun, ji, "newAddNumber", "newRoadCode", "newLandCode",
+		newbonbeon, newbubeon, usage)
+		values 
+		<foreach collection="list" item="list" index="index" open="(" close=")" separator=",">
+		  #{list[0]}
+		  ,#{list[1]}
+		  ,#{list[2]}
+		  ,#{list[3]}
+		  ,#{list[4]}
+		  ,#{list[5]}
+		  ,#{list[6]}
+		  ,#{list[7]}
+		  ,#{list[8]}
+		  ,#{list[9]}
+		  ,#{list[10]}
+		  ,#{list[11]}
+		  ,#{list[12]}
+		  ,#{list[13]}
+		</foreach>
+	</insert>
+	
+	<insert id="dbTest2" parameterType="list">
+		<foreach collection="list" item="list" index="index" separator=";">
+		insert into "TB_CARBON_B5" ("yearMonthUse", "landLocation")
+		values 
+		  (#{list.yearMonthUse},#{list.landLocation})
+		</foreach>
+	</insert>
+	
+	<insert id="dbTest3" parameterType="list">
+		insert into "TB_CARBON_B5"
+		values 
+		<foreach collection="list" item="list" index="index" separator=",">
+		  (#{list.yearMonthUse},#{list.landLocation}, #{list.roadLandLocation}
+		  , #{list.sggCode}, #{list.bjdCode}, #{list.landCode}, #{list.bun}
+		  , #{list.ji}, #{list.newAddNumber}, #{list.newRoadCode}
+		  , #{list.newLandCode}, #{list.newbonbeon}, #{list.newbubeon}
+		  , #{list.usage})
+		</foreach>
+	</insert>
+</mapper>

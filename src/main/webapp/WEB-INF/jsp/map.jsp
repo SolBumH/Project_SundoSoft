@@ -17,7 +17,8 @@
 <!-- 제이쿼리 -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="resources/js/test.js"></script>
+
+<script type="text/javascript" src="https://map.vworld.kr/js/vworldMapInit.js.do?apiKey=${apiKey}"></script>
 <style>
 .map {
 	height: 800px;
@@ -25,6 +26,7 @@
 }
 </style>
 <script type="text/javascript">
+
 $(document).ready(function() {
 	let map = new ol.Map({ // OpenLayer의 맵 객체를 생성한다.
 		target : 'map', // 맵 객체를 연결하기 위한 target으로 <div>의 id값을 지정해준다.
@@ -59,7 +61,7 @@ $(document).ready(function() {
 				data : data,
 				async : false,
 				success : function(data) {
-				//console.log(data);
+				console.log(data);
 					$('.sggOption').remove();
 					$('.bjdOption').remove();
 					$('#sggList').append($('<option class="sggOption" value="0">--시, 군, 구 선택--</option>'));
@@ -139,9 +141,11 @@ $(document).ready(function() {
 		        alert("조회 할 구역을 선택 해 주세요.")
 		      } else {
 		      // 시도 else
+		        console.log(map.getLayers());
+		      	console.log(map.getKeys());
 		        let sdLayer = new ol.layer.Tile({
 							source : new ol.source.TileWMS({
-							url : 'http://localhost:8080/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
+							url : 'http://localhost/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
 							params : {
 								'VERSION' : '1.1.0', // 2. 버전
 								'LAYERS' : 'solbum:tl_sd', // 3. 작업공간:레이어 명
@@ -160,7 +164,7 @@ $(document).ready(function() {
 		      // 시군구 else
 		      let sggLayer = new ol.layer.Tile({
 					source : new ol.source.TileWMS({
-					url : 'http://localhost:8080/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
+					url : 'http://localhost/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
 					params : {
 						'VERSION' : '1.1.0', // 2. 버전
 						'LAYERS' : 'solbum:tl_sgg', // 3. 작업공간:레이어 명
@@ -179,7 +183,7 @@ $(document).ready(function() {
 		    // 법정동 else
 		    let bjdLayer = new ol.layer.Tile({
 					source : new ol.source.TileWMS({
-					url : 'http://localhost:8080/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
+					url : 'http://localhost/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
 					params : {
 						'VERSION' : '1.1.0', // 2. 버전
 						'LAYERS' : 'solbum:tl_bjd', // 3. 작업공간:레이어 명
@@ -218,6 +222,7 @@ $(document).ready(function() {
 					<option class="bjdOption" value="0">--읍, 면, 동 선택--</option>
 				</select>
 				<button id="layerBtn">출력하기</button>
+				<button onclick="removeWMS('sdLayer')">하기</button>
 			</div>
 		</div>
 	</div>
