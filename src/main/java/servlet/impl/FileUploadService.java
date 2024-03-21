@@ -67,4 +67,8 @@ public class FileUploadService {
     }
     return result;
   }
+
+  public void deleteDb() {
+    testRepository.deleteDb();
+  }
 }

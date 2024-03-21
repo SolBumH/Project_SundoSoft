@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dbTest">
+	<delete id="deleteAll">
+		delete from "TB_CARBON_B5" 
+	</delete>
+
 	<insert id="dbTest" parameterType="list">
 		insert into "TB_CARBON_B5" ("yearMonthUse", "landLocation", "roadLandLocation", 
 		"sggCode", "bjdCode", "landCode", bun, ji, "newAddNumber", "newRoadCode", "newLandCode",

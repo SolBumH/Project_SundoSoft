@@ -63,7 +63,6 @@ $(document).ready(function() {
 				data : data,
 				async : false,
 				success : function(data) {
-				console.log(data);
 					$('.sggOption').remove();
 					$('.bjdOption').remove();
 					$('#sggList').append($('<option class="sggOption" value="0">--시, 군, 구 선택--</option>'));
@@ -107,7 +106,6 @@ $(document).ready(function() {
 					data : data,
 					async : false,
 					success : function(data) {
-						//console.log(data);
 						$('.bjdOption').remove();
 						$('#bjdList').append($('<option class="bjdOption" value="0">--읍, 면, 동 선택--</option>'));
 						let sggAdm = data.admVOList.admVOList;
@@ -159,7 +157,8 @@ $(document).ready(function() {
 									'BBOX' : [ 1.3873946E7, 3906626.5, 1.4428045E7, 4670269.5 ],
 									'SRS' : 'EPSG:3857', // SRID
 									'FORMAT' : 'image/png', // 포맷
-									'CQL_FILTER' : "sgg_cd like '" + sdValue + "___'"
+									'CQL_FILTER' : "sgg_cd like '" + sdValue + "___'",
+									'Tiling' : 'Tiled'
 								},
 								serverType : 'geoserver'
 								}),
@@ -175,11 +174,12 @@ $(document).ready(function() {
 							url : 'http://localhost/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
 							params : {
 								'VERSION' : '1.1.0', // 2. 버전
-								'LAYERS' : 'solbum:TB_CARBON_B5_BJD_VIEW', // 3. 작업공간:레이어 명
+								'LAYERS' : 'solbum:tl_bjd_view', // 3. 작업공간:레이어 명
 								'BBOX' : [1.387148932991382E7,3910407.083927817,1.46800091844669E7,4666488.829376992],
 								'SRS' : 'EPSG:3857', // SRID
 								'FORMAT' : 'image/png', // 포맷
-								'CQL_FILTER' : "bjd_cd like '" + sggValue + "___'"
+								'CQL_FILTER' : "bjd_cd like '" + sggValue + "___'",
+								'Tiling' : 'Tiled'
 							},
 						serverType : 'geoserver'
 						}),
@@ -209,6 +209,21 @@ $(document).ready(function() {
 		    // end 법정동 else
 		  }
 		});
+		
+		$('#ajaxBtn').on('click', function() {
+		  $.ajax({
+		    type : 'post',
+		    //dataType : 'text',
+		    url : '/ajaxTest.do',
+		    ContentType : "application/json",
+		    success : function(result) {
+		      console.log(result);
+		    },
+		    error : function(error) {
+		      console.log(error);
+		    }
+		  });
+		});
 });
 </script>
 </head>
@@ -232,7 +247,7 @@ $(document).ready(function() {
 					<option class="bjdOption" value="0">--읍, 면, 동 선택--</option>
 				</select>
 				<button id="layerBtn">출력하기</button>
-				<button onclick="removeWMS('sdLayer')">하기</button>
+				<button id="ajaxBtn">하기</button>
 			</div>
 		</div>
 	</div>

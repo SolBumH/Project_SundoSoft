@@ -33,6 +33,7 @@ public class FileUploadController {
   @RequestMapping(value = "/upload.do", method = RequestMethod.POST)
   public String upload(@RequestParam(value = "file") MultipartFile file) throws IOException {
     System.out.println(file.getOriginalFilename());
+    uploadService.deleteDb();
     int result = uploadService.dbUpload(file);
     return "redirect:/fileUpload.do";
   }

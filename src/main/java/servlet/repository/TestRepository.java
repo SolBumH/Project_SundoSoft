@@ -16,4 +16,8 @@ public class TestRepository {
   public int dbTest(List<Map<String, Object>> list) {
     return sqlSession.insert("dbTest.dbTest4", list);
   }
+
+  public void deleteDb() {
+    sqlSession.delete("dbTest.deleteAll");
+  }
 }
