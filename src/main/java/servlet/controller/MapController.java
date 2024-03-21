@@ -15,7 +15,7 @@ public class MapController {
 	private APIUtil util;
 	
 	@RequestMapping(value = "/map.do", method = RequestMethod.GET)
-	public String test(Model model) {
+	public String map(Model model) {
 		model.addAttribute("apiKey", util.getApiKey());
 		model.addAttribute("domain", util.getApiDomain());
 		try {
@@ -25,4 +25,16 @@ public class MapController {
     }
 		return "map";
 	}
+	
+	@RequestMapping(value = "/mapTest.do", method = RequestMethod.GET)
+  public String mapTest(Model model) {
+    model.addAttribute("apiKey", util.getApiKey());
+    model.addAttribute("domain", util.getApiDomain());
+    try {
+      model.addAttribute("sdList", util.sdAPI());
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
+    return "mapTest";
+  }
 }

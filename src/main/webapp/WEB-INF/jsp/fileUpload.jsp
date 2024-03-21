@@ -11,10 +11,5 @@
 		<input type="file" name="file" accept=".txt" />
 		<button>업로드</button>
 	</form>
-
-	<form action="read-file.do" method="post" accept="multipart/form-data">
-		<input type="file" name="file">
-		<button>읽기</button>
-	</form>
 </body>
 </html>

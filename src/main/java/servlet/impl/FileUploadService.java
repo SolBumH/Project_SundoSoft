@@ -1,7 +1,6 @@
 package servlet.impl;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
@@ -11,12 +10,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import servlet.repository.TestRepository;
 import servlet.util.Util;
 
 @Service
-public class TestService {
+public class FileUploadService {
   
   @Autowired
   private TestRepository testRepository;
@@ -24,12 +24,11 @@ public class TestService {
   @Autowired
   private Util util;
 
-  public int dbTest() {
+  public int dbUpload(MultipartFile file) {
     List<Map<String, Object>> list = new ArrayList<>();
     int result = 0;
     try {
-      BufferedReader br = new BufferedReader(
-          new InputStreamReader(new FileInputStream("C:\\Users\\ppj21\\OneDrive\\Desktop\\프로젝트\\선도소프트\\MART_KEY_01\\mart_key_01_YYYY.txt"), "UTF-8"));
+      BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
       String line;
       int i = 0;
       while ((line = br.readLine()) != null) {
@@ -61,8 +60,11 @@ public class TestService {
       br.close();
     } catch (IOException e) {
       e.printStackTrace();
+    } finally {
+      if (list.size() != 0) {
+        testRepository.dbTest(list);
+      }
     }
-    System.out.println(result);
-    return testRepository.dbTest(list);
+    return result;
   }
 }

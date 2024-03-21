@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,27 +16,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
+
+import servlet.impl.FileUploadService;
 
 @Controller
 public class FileUploadController {
+  
+  @Autowired
+  private FileUploadService uploadService;
 
   @RequestMapping(value = "/fileUpload.do", method = RequestMethod.GET)
   public String fileUpload() {
     return "fileUpload";
   }
 
-  // @RequestMapping(value = "/upload.do", method = RequestMethod.POST)
-//  @PostMapping("/upload.do")
-//  public String fileUpload(@RequestParam(value = "file", required = false) MultipartFile file) {
-//    System.out.println("post 입력");
-//    System.out.println("1ddaa");
-//    return "redirect:/fileUpload.do";
-//  }
-
   @RequestMapping(value = "/upload.do", method = RequestMethod.POST)
-  public @ResponseBody String upload(@RequestParam(value = "file") MultipartHttpServletRequest request) {
-    System.out.println(request.getFileNames());
+  public String upload(@RequestParam(value = "file") MultipartFile file) throws IOException {
+    System.out.println(file.getOriginalFilename());
+    int result = uploadService.dbUpload(file);
     return "redirect:/fileUpload.do";
   }
 
