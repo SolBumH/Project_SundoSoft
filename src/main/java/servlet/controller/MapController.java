@@ -41,7 +41,7 @@ public class MapController {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return "mapTest4";
+    return "mapTest6";
   }
 	
 	@RequestMapping(value = "/ajaxTest.do", method = RequestMethod.POST, produces = "application/json; charset=utf8")
