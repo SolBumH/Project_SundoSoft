@@ -41,10 +41,10 @@ public class MapController {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return "mapTest";
+    return "mapTest4";
   }
 	
-	@RequestMapping(value = "/ajaxTest.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/ajaxTest.do", method = RequestMethod.POST, produces = "application/json; charset=utf8")
 	public @ResponseBody String ajaxTest() {
 	  List<Map<String, Object>> list = new ArrayList<>();
 	  Map<String, Object> map = new HashMap<>();

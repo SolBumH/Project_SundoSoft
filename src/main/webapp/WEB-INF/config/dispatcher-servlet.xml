@@ -16,7 +16,7 @@
 		<context:exclude-filter type="annotation"
 			expression="org.springframework.stereotype.Repository" />
 	</context:component-scan>
-
+	<mvc:annotation-driven/>
 	<bean
 		class="org.springframework.web.servlet.view.UrlBasedViewResolver"
 		p:order="1"

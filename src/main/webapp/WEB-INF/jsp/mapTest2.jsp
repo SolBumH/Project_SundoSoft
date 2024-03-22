@@ -17,8 +17,7 @@
 <!-- 제이쿼리 -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-<script type="text/javascript" src="https://map.vworld.kr/js/vworldMapInit.js.do?apiKey=${apiKey}"></script>
+<script type="text/javascript" src="https://map.vworld.kr/js/vworldMapInit.js.do?apiKey=${apiKey}&domain=${domain }"></script>
 <style>
 .map {
 	height: 800px;
@@ -27,8 +26,18 @@
 </style>
 <script type="text/javascript">
 $(document).ready(function() {
-  let source = new ol.source.XYZ({
-	  url : 'http://api.vworld.kr/req/wmts/1.0.0/${apiKey}/Base/{z}/{y}/{x}.png'
+  let source = new ol.source.TileWMS({
+	  // url : 'http://api.vworld.kr/req/wmts/1.0.0/${apiKey}/Base/{z}/{y}/{x}.png',
+	  url : 'https://api.vworld.kr/req/wms?key=${apiKey}&domain=${domain}',
+	  params : {
+	    'layers' : ['lt_c_upisuq173','lt_c_adsido'],
+	    'request' : 'GetMap',
+	    'CRS' : 'EPSG:3857',
+	    'bbox' : [1.3873946E7, 3906626.5, 1.4428045E7, 4670269.5],
+	    'width' : '256',
+	    'height' : '256',
+	    },
+    // crossOrigin : 'use-credentials'
 	});
 	
 	let mapLayer = new ol.layer.Tile({
@@ -36,13 +45,15 @@ $(document).ready(function() {
 	  properties : {name : 'mapLayer'}
 	});
 	
+	let view = new ol.View({ 
+		center : ol.proj.fromLonLat([ 127.8, 36.2 ]),
+		zoom : 8
+	});
+	
 	const map = new ol.Map({ 
 		target : 'map',
 		layers : [ mapLayer ],
-	  view : new ol.View({ 
-				center : ol.proj.fromLonLat([ 127.8, 36.2 ]),
-				zoom : 8
-			})
+	  view : view
 		});
 		
 		$("#sdList").on("change", function() {
@@ -128,8 +139,10 @@ $(document).ready(function() {
 		});
 		
 		$("#layerBtn").on('click', function() {
-		  map.getAllLayers().forEach(layer => {
-		  	if (layer.get('name') != 'mapLayer') {
+		  map.getAllLayers().forEach(layer =>
+		  {
+		  	if (layer.get('name') != 'mapLayer')
+		  	{
 		  		map.removeLayer(layer);
 		  	}
 		  });
@@ -176,7 +189,6 @@ $(document).ready(function() {
 								'SRS' : 'EPSG:3857', // SRID
 								'FORMAT' : 'image/png', // 포맷
 								'CQL_FILTER' : "bjd_cd like '" + sggValue + "___'",
-								'Tiling' : 'Tiled'
 							},
 						serverType : 'geoserver'
 						}),
@@ -221,6 +233,23 @@ $(document).ready(function() {
 		    }
 		  });
 		});
+		
+		map.on('click', function (evt) {
+	    document.getElementById('info').innerHTML = '';
+	    
+	    let viewResolution = view.getResolution();
+	    let info = source.getFeatureInfoUrl(
+	        evt.coordinate,
+	        viewResolution,
+	        'EPSG:3857',
+	        {'INFO_FORMAT': 'text/html'},
+	      );
+	    
+	    if (info) {
+	        document.getElementById('info').innerHTML =
+	            '<div>'+info+'</div>';
+	    }
+	});
 });
 </script>
 </head>
@@ -229,6 +258,7 @@ $(document).ready(function() {
 		<div>
 			<div id="map" class="map"></div>
 		</div>
+		<div id="info">&nbsp;</div>
 		<div>
 			<div id="listDiv">
 				<select id="sdList">

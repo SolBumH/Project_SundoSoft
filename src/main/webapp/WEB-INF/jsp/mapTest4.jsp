@@ -17,8 +17,8 @@
 <!-- 제이쿼리 -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-<script type="text/javascript" src="https://map.vworld.kr/js/vworldMapInit.js.do?apiKey=${apiKey}"></script>
+<script type="text/javascript" src="https://map.vworld.kr/js/vworldMapInit.js.do?apiKey=${apiKey}&domain=${domain}"></script>
+<script type="text/javascript" src="/resources/js/test.js"></script>
 <style>
 .map {
 	height: 800px;
@@ -30,19 +30,42 @@ $(document).ready(function() {
   let source = new ol.source.XYZ({
 	  url : 'http://api.vworld.kr/req/wmts/1.0.0/${apiKey}/Base/{z}/{y}/{x}.png'
 	});
+  
+  let lineSource = new ol.source.TileWMS({
+	  // url : 'http://api.vworld.kr/req/wmts/1.0.0/${apiKey}/Base/{z}/{y}/{x}.png',
+	  url : 'https://api.vworld.kr/req/wms?key=${apiKey}&domain=${domain}',
+	  params : {
+	    'layers' : ['lt_c_upisuq173','lt_c_adsido'],
+	    'request' : 'GetMap',
+	    'CRS' : 'EPSG:3857',
+	    'bbox' : [1.3873946E7, 3906626.5, 1.4428045E7, 4670269.5],
+	    'width' : '256',
+	    'height' : '256',
+	    },
+    // crossOrigin : 'use-credentials'
+	});
+  
+  let lineLayer = new ol.layer.Tile({
+    source : lineSource,
+    properties : {name : 'lineLayer'},
+    opacity: 0.5
+  });
 	
 	let mapLayer = new ol.layer.Tile({
 	  source : source,
 	  properties : {name : 'mapLayer'}
 	});
 	
+	let view = new ol.View({ 
+		center : ol.proj.fromLonLat([ 127.8, 36.2 ]),
+		zoom : 8,
+		enableRotation : false // alt+shift+드래그 남북 고정되지 않는 회전 막기
+	});
+	
 	const map = new ol.Map({ 
 		target : 'map',
-		layers : [ mapLayer ],
-	  view : new ol.View({ 
-				center : ol.proj.fromLonLat([ 127.8, 36.2 ]),
-				zoom : 8
-			})
+		layers : [ mapLayer, lineLayer ],
+	  view : view
 		});
 		
 		$("#sdList").on("change", function() {
@@ -129,18 +152,18 @@ $(document).ready(function() {
 		
 		$("#layerBtn").on('click', function() {
 		  map.getAllLayers().forEach(layer => {
-		  	if (layer.get('name') != 'mapLayer') {
+		  	if (layer.get('name') != 'mapLayer' && layer.get('name') != 'lineLayer') {
 		  		map.removeLayer(layer);
 		  	}
 		  });
 		  let sdValue = document.getElementById('sdList').options[document.getElementById('sdList').selectedIndex].value;
 		  let sggValue = document.getElementById('sggList').options[document.getElementById('sggList').selectedIndex].value;
-		  let bjdValue = document.getElementById('bjdList').options[document.getElementById('bjdList').selectedIndex].value;
+		  // let bjdValue = document.getElementById('bjdList').options[document.getElementById('bjdList').selectedIndex].value;
 		  //map.removeLayer(sggLayer);
 		  //map.removeLayer(bjdLayer);
 		  // alert(bjdOption.options[bjdOption.selectedIndex].value);
 		  // alert("sd : " + sdValue + "\nsgg : " + sggValue + "\nbjd : " + bjdValue);
-		  if (bjdValue == 0) { // 법정동이 선택이 안됐으면
+		  // if (bjdValue == 0) { // 법정동이 선택이 안됐으면
 		    if (sggValue == 0) { // 시군구 선택이 안됐으면
 		      if (sdValue == 0) { // 시도 선택을 안했으면
 		        alert("조회 할 구역을 선택 해 주세요.");
@@ -157,11 +180,13 @@ $(document).ready(function() {
 									'FORMAT' : 'image/png', // 포맷
 									'CQL_FILTER' : "sgg_cd like '" + sdValue + "___'",
 								},
-								serverType : 'geoserver'
+								serverType : 'geoserver',
 								}),
-								properties : {name : 'sdLayer'}
+								properties : {name : 'sdLayer'},
+		            opacity: 0.4
 							});
 		        map.addLayer(sdLayer);
+		        console.log(sdLayer);
 		      // end 시도 else
 		      }
 		    } else {
@@ -176,16 +201,17 @@ $(document).ready(function() {
 								'SRS' : 'EPSG:3857', // SRID
 								'FORMAT' : 'image/png', // 포맷
 								'CQL_FILTER' : "bjd_cd like '" + sggValue + "___'",
-								'Tiling' : 'Tiled'
 							},
 						serverType : 'geoserver'
 						}),
-						properties : {name : 'sggLayer'}
+						properties : {name : 'sggLayer'},
+						opacity: 0.6
 					});
+		      console.log(sggLayer);
 		    	map.addLayer(sggLayer);
 		      // end 시군구 else
 		    }
-		  } else {
+		  /* } else {
 		    // 법정동 else
 		    let bjdLayer = new ol.layer.Tile({
 					source : new ol.source.TileWMS({
@@ -200,20 +226,22 @@ $(document).ready(function() {
 					},
 					serverType : 'geoserver',
 					}),
-					properties : {name : 'bjdLayer'}
+					properties : {name : 'bjdLayer'},
+					opacity: 0.8
 				});
 		    map.addLayer(bjdLayer);
 		    // end 법정동 else
-		  }
+		  } */
 		});
 		
 		$('#ajaxBtn').on('click', function() {
 		  $.ajax({
 		    type : 'post',
-		    //dataType : 'text',
+		    dataType : 'json',
 		    url : '/ajaxTest.do',
 		    ContentType : "application/json",
 		    success : function(result) {
+		      alert(result);
 		      console.log(result);
 		    },
 		    error : function(error) {
@@ -221,6 +249,24 @@ $(document).ready(function() {
 		    }
 		  });
 		});
+		
+		map.on('singleclick', function (evt) {
+	    document.getElementById('info').innerHTML = '';
+	    let viewResolution = view.getResolution();
+	    // console.log(viewResolution);
+	    // console.log(sdLayer);
+	    let info = lineSource.getFeatureInfoUrl(
+	        evt.coordinate,
+	        viewResolution,
+	        'EPSG:3857',
+	        {'INFO_FORMAT': 'text/html'},
+	      );
+	    console.log(info);
+	    if (info) {
+	        document.getElementById('info').innerHTML =
+	          '<iframe width="100%" seamless="" src="' + info + '"></iframe>';
+	    }
+	});
 });
 </script>
 </head>
@@ -228,6 +274,7 @@ $(document).ready(function() {
 	<div style="width: 1000px;">
 		<div>
 			<div id="map" class="map"></div>
+			<div id="info" class="info"></div>
 		</div>
 		<div>
 			<div id="listDiv">
@@ -240,9 +287,7 @@ $(document).ready(function() {
 				<select id="sggList">
 					<option class="sggOption" value="0">--시, 군, 구 선택--</option>
 				</select>
-				<select id="bjdList">
-					<option class="bjdOption" value="0">--읍, 면, 동 선택--</option>
-				</select>
+				<!-- <select id="bjdList"><option class="bjdOption" value="0">--읍, 면, 동 선택--</option></select> -->
 				<button id="layerBtn">출력하기</button>
 				<button id="ajaxBtn">하기</button>
 			</div>

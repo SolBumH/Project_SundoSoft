@@ -34,7 +34,7 @@ public class FileUploadService {
       while ((line = br.readLine()) != null) {
         if (i == 21000) {
           fileUploadRepository.insertDB(list);
-          list = new ArrayList<>();
+          list.clear();
           i = 0;
         }
         Map<String, Object> map = new HashMap<>();

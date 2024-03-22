@@ -17,8 +17,8 @@
 <!-- 제이쿼리 -->
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-
-<script type="text/javascript" src="https://map.vworld.kr/js/vworldMapInit.js.do?apiKey=${apiKey}"></script>
+<script type="text/javascript" src="https://map.vworld.kr/js/vworldMapInit.js.do?apiKey=${apiKey}&domain=${domain}"></script>
+<script type="text/javascript" src="/resources/js/test.js"></script>
 <style>
 .map {
 	height: 800px;
@@ -30,6 +30,25 @@ $(document).ready(function() {
   let source = new ol.source.XYZ({
 	  url : 'http://api.vworld.kr/req/wmts/1.0.0/${apiKey}/Base/{z}/{y}/{x}.png'
 	});
+  
+  let lineSource = new ol.source.TileWMS({
+	  // url : 'http://api.vworld.kr/req/wmts/1.0.0/${apiKey}/Base/{z}/{y}/{x}.png',
+	  url : 'https://api.vworld.kr/req/wms?key=${apiKey}&domain=${domain}',
+	  params : {
+	    'layers' : ['lt_c_adsido'],
+	    'request' : 'GetMap',
+	    'CRS' : 'EPSG:3857',
+	    'bbox' : [1.3873946E7, 3906626.5, 1.4428045E7, 4670269.5],
+	    'width' : '256',
+	    'height' : '256',
+	    },
+    // crossOrigin : 'use-credentials'
+	});
+  
+  let lineLayer = new ol.layer.Tile({
+    source : lineSource,
+    properties : {name : 'lineLayer'}
+  });
 	
 	let mapLayer = new ol.layer.Tile({
 	  source : source,
@@ -38,7 +57,7 @@ $(document).ready(function() {
 	
 	const map = new ol.Map({ 
 		target : 'map',
-		layers : [ mapLayer ],
+		layers : [ mapLayer, lineLayer ],
 	  view : new ol.View({ 
 				center : ol.proj.fromLonLat([ 127.8, 36.2 ]),
 				zoom : 8
@@ -129,7 +148,7 @@ $(document).ready(function() {
 		
 		$("#layerBtn").on('click', function() {
 		  map.getAllLayers().forEach(layer => {
-		  	if (layer.get('name') != 'mapLayer') {
+		  	if (layer.get('name') != 'mapLayer' && layer.get('name') != 'lineLayer') {
 		  		map.removeLayer(layer);
 		  	}
 		  });
@@ -157,7 +176,8 @@ $(document).ready(function() {
 									'FORMAT' : 'image/png', // 포맷
 									'CQL_FILTER' : "sgg_cd like '" + sdValue + "___'",
 								},
-								serverType : 'geoserver'
+								serverType : 'geoserver',
+								//crossOrigin : 'anonymous'
 								}),
 								properties : {name : 'sdLayer'}
 							});
@@ -178,7 +198,8 @@ $(document).ready(function() {
 								'CQL_FILTER' : "bjd_cd like '" + sggValue + "___'",
 								'Tiling' : 'Tiled'
 							},
-						serverType : 'geoserver'
+						serverType : 'geoserver',
+						crossOrigin : 'anonymous'
 						}),
 						properties : {name : 'sggLayer'}
 					});
@@ -199,6 +220,7 @@ $(document).ready(function() {
 						'CQL_FILTER' : 'bjd_cd=' + bjdValue
 					},
 					serverType : 'geoserver',
+					crossOrigin : 'anonymous'
 					}),
 					properties : {name : 'bjdLayer'}
 				});
@@ -210,16 +232,21 @@ $(document).ready(function() {
 		$('#ajaxBtn').on('click', function() {
 		  $.ajax({
 		    type : 'post',
-		    //dataType : 'text',
+		    dataType : 'json',
 		    url : '/ajaxTest.do',
 		    ContentType : "application/json",
 		    success : function(result) {
+		      alert(result);
 		      console.log(result);
 		    },
 		    error : function(error) {
 		      console.log(error);
 		    }
 		  });
+		});
+		
+		map.on('singleclike', function(event){
+		  console.log(event);
 		});
 });
 </script>
