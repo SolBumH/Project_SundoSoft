@@ -12,19 +12,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import servlet.repository.TestRepository;
+import servlet.repository.FileUploadRepository;
 import servlet.util.Util;
 
 @Service
 public class FileUploadService {
   
   @Autowired
-  private TestRepository testRepository;
+  private FileUploadRepository fileUploadRepository;
   
   @Autowired
   private Util util;
 
-  public int dbUpload(MultipartFile file) {
+  public int insertDB(MultipartFile file) {
     List<Map<String, Object>> list = new ArrayList<>();
     int result = 0;
     try {
@@ -33,7 +33,7 @@ public class FileUploadService {
       int i = 0;
       while ((line = br.readLine()) != null) {
         if (i == 21000) {
-          testRepository.dbTest(list);
+          fileUploadRepository.insertDB(list);
           list = new ArrayList<>();
           i = 0;
         }
@@ -62,13 +62,13 @@ public class FileUploadService {
       e.printStackTrace();
     } finally {
       if (list.size() != 0) {
-        testRepository.dbTest(list);
+        fileUploadRepository.insertDB(list);
       }
     }
     return result;
   }
 
   public void deleteDb() {
-    testRepository.deleteDb();
+    fileUploadRepository.deleteDb();
   }
 }
