@@ -15,8 +15,7 @@
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/ol@v6.15.1/ol.css">
 <!-- 제이쿼리 -->
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://map.vworld.kr/js/vworldMapInit.js.do?apiKey=${apiKey}&domain=${domain}"></script>
 <script type="text/javascript" src="/resources/js/test.js"></script>
 <style>
@@ -272,6 +271,7 @@ $(document).ready(function() {
 		<div>
 			<div id="map" class="map"></div>
 			<div id="info" class="info"></div>
+			<div id="mapOverlay"></div>
 		</div>
 		<div>
 			<div id="listDiv">
