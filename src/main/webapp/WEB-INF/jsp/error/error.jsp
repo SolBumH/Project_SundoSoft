@@ -4,9 +4,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>api테스트용</title>
+<title>에러페이지</title>
 </head>
 <body>
-	${list }
+	<h1>에러입니다</h1>
 </body>
 </html>

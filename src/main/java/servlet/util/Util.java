@@ -12,4 +12,13 @@ public class Util {
       return 0;
     }
   }
+  
+  public boolean intCheck(String str) {
+    try {
+      Integer.valueOf(str);
+      return true;
+    } catch (Exception e) {
+      return false;
+    }
+  }
 }

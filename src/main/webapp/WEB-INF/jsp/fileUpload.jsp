@@ -37,6 +37,7 @@ $(document).ready(function(){
 </script>
 </head>
 <body>
+	<%@ include file="menu.jsp" %>
 	<form id="uploadForm" method="post" enctype="multipart/form-data">
 		<input id="file" type="file" name="file" accept=".txt" />
 	</form>
