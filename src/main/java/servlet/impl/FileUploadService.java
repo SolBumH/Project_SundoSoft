@@ -37,6 +37,9 @@ public class FileUploadService {
           list.clear();
           i = 0;
         }
+        if (result == 2000000) {
+          break;
+        }
         Map<String, Object> map = new HashMap<>();
         String[] str = line.split("\\|");
 //        map.put("yearMonthUse" ,str[0]);

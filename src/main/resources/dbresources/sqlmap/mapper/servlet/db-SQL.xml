@@ -4,7 +4,7 @@
 	<delete id="deleteAll">
 		TRUNCATE TABLE "TB_CARBON_B5" 
 	</delete>
-
+	
 	<insert id="dbTest" parameterType="list">
 		insert into "TB_CARBON_B5" ("yearMonthUse", "landLocation", "roadLandLocation", 
 		"sggCode", "bjdCode", "landCode", bun, ji, "newAddNumber", "newRoadCode", "newLandCode",

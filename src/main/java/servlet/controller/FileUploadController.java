@@ -23,7 +23,6 @@ public class FileUploadController {
 
   @RequestMapping(value = "/upload.do", method = RequestMethod.POST)
   public @ResponseBody String upload(@RequestParam(value = "file") MultipartFile file) {
-    // System.out.println(file.getOriginalFilename());
     uploadService.deleteDb(); // DB 초기화
     int result = uploadService.insertDB(file);
     return String.valueOf(result);
