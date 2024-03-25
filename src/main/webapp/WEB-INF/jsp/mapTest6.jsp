@@ -18,12 +18,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://map.vworld.kr/js/vworldMapInit.js.do?apiKey=${apiKey}&domain=${domain}"></script>
 <script type="text/javascript" src="/resources/js/test.js"></script>
-<style>
-.map {
-	height: 800px;
-	width: 100%;
-}
-</style>
+<link rel="stylesheet" href="/resources/css/map.css">
 <script type="text/javascript">
 let sdLayer; // 시도 레이어
 let sggLayer; // 시군구 레이어
@@ -166,6 +161,7 @@ $(document).ready(function() {
 		  	}
 		  });
 		    if (sggValue == 0) { // 시군구 선택이 안됐으면
+		      sggLayerSource = new ol.source.TileWMS();
 		      if (sdValue == 0) { // 시도 선택을 안했으면
 		        alert("조회 할 구역을 선택 해 주세요.");
 		      } else {
@@ -216,36 +212,30 @@ $(document).ready(function() {
 		    }
 		});
 		
-		$('#ajaxBtn').on('click', function() {
-		  $.ajax({
-		    type : 'post',
-		    dataType : 'json',
-		    url : '/ajaxTest.do',
-		    ContentType : "application/json",
-		    success : function(result) {
-		      alert(result);
-		      console.log(result);
-		    },
-		    error : function(error) {
-		      console.log(error);
-		    }
-		  });
+		$('#delOverlayBtn').on('click', function() {
+		  map.getOverlays().forEach(overlay => {
+	  		map.removeOverlay(overlay);
+	    });
 		});
 		
 		map.on('singleclick', function (evt) {
-		  console.log(sdLayerSource.urls);
-		  console.log(sdLayerSource);
+		  map.getOverlays().forEach(overlay => {
+		  		map.removeOverlay(overlay);
+		  });
+		  // console.log(sdLayerSource.urls);
+		  // console.log(sdLayerSource);
 		  if (sggLayerSource.urls == null) {
-		    alert("표시할 구역을 선택하세요.");
+		    alert("시, 군, 구를 출력 후 눌러주세요.");
 		  } else {
 //	    document.getElementById('info').innerHTML = '';
 	      let viewResolution = view.getResolution();
+	      let coordinate = evt.coordinate;
 	      // console.log(sdLayer);
 	      // console.log(evt.coordinate); 
 	      // console.log(viewResolution);
 	      // let info = lineSource.getFeatureInfoUrl(
 	      let info = sggLayerSource.getFeatureInfoUrl(
-	          evt.coordinate, 
+	          coordinate, 
 	          viewResolution, 
 	          'EPSG:3857',
 	          {'INFO_FORMAT': 'application/json'}
@@ -253,13 +243,38 @@ $(document).ready(function() {
 	      if (info) {
 	        fetch(info).then(result => result.json())
 	          .then(function(res) {
-	            console.log(res.features[0].properties);
-	            overlayBjdnm = res.features[0].properties.bjd_nm
-	            overlayUsage = res.features[0].properties.usage;
+	            //console.log(res.features[0].properties);
+	            if (res.features[0] == null) {
+	              alert("정확한 위치를 클릭해주세요.");
+	            } else {
+	              overlayBjdnm = res.features[0].properties.bjd_nm
+	              overlayUsage = res.features[0].properties.usage.toLocaleString('ko-KR');
 	            }
-	          )
+	          });
+      	  console.log(overlayBjdnm + " : " + overlayUsage);
 	      }
-	      console.log(overlayBjdnm + " : " + overlayUsage);
+	      
+	      let mapOverlay = document.createElement('div');
+	      mapOverlay.setAttribute('class', 'mapOverlay');
+	      let bjd_nm = document.createElement('div');
+	      bjd_nm.setAttribute('class', 'bjd_nm');
+	      mapOverlay.appendChild(bjd_nm);
+	      let bjd_usage = document.createElement('div');
+	      bjd_usage.setAttribute('class', 'bjd_usage');
+	      mapOverlay.appendChild(bjd_usage);
+	      document.body.appendChild(mapOverlay);
+	      bjd_nm.innerHTML = '<div>지역 : ' + overlayBjdnm + '</div>';
+	      bjd_usage.innerHTML = '<div>사용량 : ' + overlayUsage + ' KWh</div>';
+	      
+	      let overlay = new ol.Overlay({
+	          element: mapOverlay,
+	          //autoPan: true,
+	          //autoPanAnimation: {
+	          //  duration: 250
+	          //}
+	        });
+	      map.addOverlay(overlay);
+	      overlay.setPosition(coordinate);
 		  }
 	});
 });
@@ -271,7 +286,6 @@ $(document).ready(function() {
 		<div>
 			<div id="map" class="map"></div>
 			<div id="info" class="info"></div>
-			<div id="mapOverlay"></div>
 		</div>
 		<div>
 			<div id="listDiv">
@@ -286,7 +300,7 @@ $(document).ready(function() {
 				</select>
 				<!-- <select id="bjdList"><option class="bjdOption" value="0">--읍, 면, 동 선택--</option></select> -->
 				<button id="layerBtn">출력하기</button>
-				<button id="ajaxBtn">하기</button>
+				<button id="delOverlayBtn">오버레이 삭제하기</button>
 			</div>
 		</div>
 	</div>
