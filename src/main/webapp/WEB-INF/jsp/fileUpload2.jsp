@@ -52,8 +52,8 @@ $(document).ready(function(){
 	<div id="linkbar" class="">
 		<%@ include file="menu.jsp" %>
 	</div>
-	<div id="main" class="px-2">
-		<h2 class="pageName">파일 업로드</h2>
+	<div id="main">
+		<div class="pageName">파일 업로드</div>
 		<h5>데이터는 최대 200만개 까지만 추가됩니다.</h5>
 		<div class="">
 			<form id="uploadForm" method="post" enctype="multipart/form-data">

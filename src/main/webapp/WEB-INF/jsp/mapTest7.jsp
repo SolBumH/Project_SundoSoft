@@ -290,10 +290,11 @@ $(document).ready(function() {
 	<%@ include file="menu.jsp" %>
 	</div>
 	<div class="main">
-		<h2 class="pageName">지도</h2>
+		<div class="pageName">지도</div>
 		<div>
 			<div id="listDiv">
 				<div class="sdDiv">
+					<label for="sdList">시, 도 선택</label>
 				  <select id="sdList" class="form-select">
 				  	<option value="0">-- 시, 도 선택 --</option>
 				  	<c:forEach items="${sdList }" var="sd">
@@ -302,19 +303,21 @@ $(document).ready(function() {
 			  	</select>
 				</div>
 				<div class="sggDiv">
+					<label for="sggList">시, 군, 구 선택</label>
 				  <select id="sggList" class="form-select">
 					  <option class="sggOption" value="0">-- 시, 군, 구 선택 --</option>
 				  </select>
 				</div>
 				<div class="bumDiv">
+					<label for="bumList">범례 선택</label>
 					<select id="bumList" class="form-select">
 						<option class="bumOption" value="1">Natural Break</option>
 						<option class="bumOption" value="2">등간격</option>
 					</select>
 				</div>
 				<!-- <select id="bjdList"><option class="bjdOption" value="0">--읍, 면, 동 선택--</option></select> -->
-				<button id="layerBtn">출력하기</button>
-				<button id="delOverlayBtn">오버레이 삭제하기</button>
+				<button id="layerBtn" class="btn btn-outline-dark">출력하기</button>
+				<button id="delOverlayBtn" class="btn btn-outline-dark">오버레이 삭제하기</button>
 			</div>
 		</div>
 		<div class="mapDiv">

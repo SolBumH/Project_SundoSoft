@@ -6,8 +6,13 @@ body {
 	font-family: 'Malgun Gothic';
 }
 
+#main {
+	padding: 0 5px;
+}
+
 .pageName {
 	margin-top: 10px;
+	font-size: 24pt;
 }
 
 #uploadForm {
@@ -24,8 +29,6 @@ body {
 	height: 35px;
 }
 
-#main {
-}
 
 ul {
 	list-style: none;
@@ -58,12 +61,18 @@ option {
 }
 
 .map {
-	height: 800px;
+	height: 820px;
+	border: 3px solid black;
+	margin-right: 10px;
 }
 
 .mapDiv {
-	width: 1500px;
-	margin-left: 200px;
+	width: auto;
+	margin-left: 210px;
+}
+
+.chart {
+	margin-left: 210px;
 }
 
 #listDiv {
@@ -80,3 +89,8 @@ option {
   color: white;
   border-radius: 10px;
 }
+
+label {
+	font-size: 12pt;
+}
+
