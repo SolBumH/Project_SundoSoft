@@ -41,6 +41,6 @@ public class MapController {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return "mapTest7";
+    return "mapTest8";
   }
 }
