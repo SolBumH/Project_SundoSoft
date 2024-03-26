@@ -41,19 +41,6 @@ public class MapController {
     } catch (Exception e) {
       e.printStackTrace();
     }
-    return "mapTest6";
+    return "mapTest7";
   }
-	
-	@RequestMapping(value = "/ajaxTest.do", method = RequestMethod.POST, produces = "application/json; charset=utf8")
-	public @ResponseBody String ajaxTest() {
-	  List<Map<String, Object>> list = new ArrayList<>();
-	  Map<String, Object> map = new HashMap<>();
-	  map.put("test", 1);
-	  map.put("123123", 2);
-	  map.put("ㅁㄴㅇㅁㅇㄴ", 3);
-	  map.put("ㄴㅁㅇㅁㅇ", 4);
-	  map.put("잘가요", 5);
-	  list.add(map);
-	  return list.toString(); 
-	}
 }

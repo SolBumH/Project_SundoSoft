@@ -37,7 +37,7 @@ public class FileUploadService {
           list.clear();
           i = 0;
         }
-        if (result == 2000000) {
+        if (result == 1500000) {
           break;
         }
         Map<String, Object> map = new HashMap<>();

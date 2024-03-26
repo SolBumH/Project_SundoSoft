@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
 <head>
-<title>map6</title>
+<title>map7</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -13,7 +13,6 @@
 <!-- 부트스트랩 CDN -->
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="/resources/css/all.css"/>
 <!-- OpenLayer 링크 -->
 <script
 	src="https://cdn.rawgit.com/openlayers/openlayers.github.io/master/en/v6.15.1/build/ol.js"></script>
@@ -23,6 +22,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://map.vworld.kr/js/vworldMapInit.js.do?apiKey=${apiKey}&domain=${domain}"></script>
 <script type="text/javascript" src="/resources/js/test.js"></script>
+<link rel="stylesheet" href="/resources/css/all.css"/>
 <link rel="stylesheet" href="/resources/css/map.css">
 <script type="text/javascript">
 let sdLayer; // 시도 레이어
@@ -97,8 +97,8 @@ $(document).ready(function() {
 				success : function(data) {
 					$('.sggOption').remove();
 					$('.bjdOption').remove();
-					$('#sggList').append($('<option class="sggOption" value="0">--시, 군, 구 선택--</option>'));
-					$('#bjdList').append($('<option class="bjdOption" value="0">--읍, 면, 동 선택--</option>'));
+					$('#sggList').append($('<option class="sggOption" value="0">-- 시, 군, 구 선택 --</option>'));
+					$('#bjdList').append($('<option class="bjdOption" value="0">-- 읍, 면, 동 선택 --</option>'));
 					let adm = data.admVOList.admVOList;
 					//console.log(adm[0].lowestAdmCodeNm);
 					for (let i = 0; i < adm.length; i++) {
@@ -115,8 +115,8 @@ $(document).ready(function() {
 			} else {
 				$('.sggOption').remove();
 				$('.bjdOption').remove();
-				$('#sggList').append($('<option class="sggOption" value="0">--시, 군, 구 선택--</option>'));
-				$('#bjdList').append($('<option class="bjdOption" value="0">--읍, 면, 동 선택--</option>'));
+				$('#sggList').append($('<option class="sggOption" value="0">-- 시, 군, 구 선택 --</option>'));
+				$('#bjdList').append($('<option class="bjdOption" value="0">-- 읍, 면, 동 선택 --</option>'));
 			}
 		});
 
@@ -140,7 +140,7 @@ $(document).ready(function() {
 					async : false,
 					success : function(data) {
 						$('.bjdOption').remove();
-						$('#bjdList').append($('<option class="bjdOption" value="0">--읍, 면, 동 선택--</option>'));
+						$('#bjdList').append($('<option class="bjdOption" value="0">-- 읍, 면, 동 선택 --</option>'));
 						let sggAdm = data.admVOList.admVOList;
 						for (let i = 0; i < sggAdm.length; i++) {
 							let bjdHtml = $("<option></option>");
@@ -155,7 +155,7 @@ $(document).ready(function() {
 				});
 			} else {
 				$('.bjdOption').remove();
-				$('#bjdList').append($('<option class="bjdOption" value="0">--읍, 면, 동 선택--</option>'));
+				$('#bjdList').append($('<option class="bjdOption" value="0">-- 읍, 면, 동 선택 --</option>'));
 			}
 		});
 		
@@ -290,17 +290,28 @@ $(document).ready(function() {
 	<%@ include file="menu.jsp" %>
 	</div>
 	<div class="main">
+		<h2 class="pageName">지도</h2>
 		<div>
 			<div id="listDiv">
-				<select id="sdList">
-					<option value="0">--시, 도 선택--</option>
-					<c:forEach items="${sdList }" var="sd">
-						<option value="${sd.admCode }">${sd.admCodeNm }</option>
-					</c:forEach>
-				</select>
-				<select id="sggList">
-					<option class="sggOption" value="0">--시, 군, 구 선택--</option>
-				</select>
+				<div class="sdDiv">
+				  <select id="sdList" class="form-select">
+				  	<option value="0">-- 시, 도 선택 --</option>
+				  	<c:forEach items="${sdList }" var="sd">
+				  		<option value="${sd.admCode }">${sd.admCodeNm }</option>
+			  		</c:forEach>
+			  	</select>
+				</div>
+				<div class="sggDiv">
+				  <select id="sggList" class="form-select">
+					  <option class="sggOption" value="0">-- 시, 군, 구 선택 --</option>
+				  </select>
+				</div>
+				<div class="bumDiv">
+					<select id="bumList" class="form-select">
+						<option class="bumOption" value="1">Natural Break</option>
+						<option class="bumOption" value="2">등간격</option>
+					</select>
+				</div>
 				<!-- <select id="bjdList"><option class="bjdOption" value="0">--읍, 면, 동 선택--</option></select> -->
 				<button id="layerBtn">출력하기</button>
 				<button id="delOverlayBtn">오버레이 삭제하기</button>

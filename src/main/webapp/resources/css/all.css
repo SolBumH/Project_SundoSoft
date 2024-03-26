@@ -1,0 +1,82 @@
+@charset "UTF-8";
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Malgun Gothic';
+}
+
+.pageName {
+	margin-top: 10px;
+}
+
+#uploadForm {
+	display: inline-block;
+}
+
+#file {
+	width: 500px;
+}
+
+#linkbar {
+	/* position: fixed; */
+	background-color: black;
+	height: 35px;
+}
+
+#main {
+}
+
+ul {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	text-align: center;
+}
+
+ul li {
+	display: inline-block;
+	color: white;
+	line-height: 35px;
+	padding: 0 10px;
+	font-family: 'Malgun Gothic';
+	font-size: 13pt;
+}
+
+li:hover {
+	cursor: pointer;
+}
+
+select {
+	text-align: center;
+	margin: 5px 0;
+	font-size: 15pt;
+}
+
+option {
+	font-size: 10pt;
+}
+
+.map {
+	height: 800px;
+}
+
+.mapDiv {
+	width: 1500px;
+	margin-left: 200px;
+}
+
+#listDiv {
+	position: fixed;
+	float: left;
+ 	padding: 0 7px;
+}
+
+.mapOverlay {
+  background-color: #000;
+  padding: 10px;
+  font-size: larger;
+  font-family: 'malgun gothic';
+  color: white;
+  border-radius: 10px;
+}

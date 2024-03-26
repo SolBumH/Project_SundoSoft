@@ -10,6 +10,7 @@ import servlet.repository.ChartRepository;
 
 @Service
 public class ChartService {
+  
   @Autowired
   private ChartRepository chartRepository;
 
