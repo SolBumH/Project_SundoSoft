@@ -182,8 +182,8 @@ $(document).ready(function() {
 							url : 'http://localhost/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
 							params : {
 								'VERSION' : '1.1.0', // 2. 버전
-								'LAYERS' : 'solbum:tl_sgg_view', // 3. 작업공간:레이어 명
-								'BBOX' : [ 1.3975136593685223E7,3910407.083927817,1.4418123633896008E7,4666488.829376992 ],
+								'LAYERS' : 'solbum:b5_sgg_mview', // 3. 작업공간:레이어 명
+								'BBOX' : [ 1.3867446E7,3906626.5,1.4684053E7,4670269.5 ],
 								'SRS' : 'EPSG:3857', // SRID
 								'FORMAT' : 'image/png', // 포맷
 								'CQL_FILTER' : "sgg_cd like '" + sdValue + "___'",
@@ -206,8 +206,8 @@ $(document).ready(function() {
 						url : 'http://localhost/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
 						params : {
 							'VERSION' : '1.1.0', // 2. 버전
-							'LAYERS' : 'solbum:tl_bjd_view', // 3. 작업공간:레이어 명
-							'BBOX' : [1.387148932991382E7,3910407.083927817,1.46800091844669E7,4666488.829376992],
+							'LAYERS' : 'solbum:b5_bjd_mview', // 3. 작업공간:레이어 명
+							'BBOX' : [ 1.386872E7,3906626.5,1.4428071E7,4670269.5 ],
 							'SRS' : 'EPSG:3857', // SRID
 							'FORMAT' : 'image/png', // 포맷
 							'CQL_FILTER' : "bjd_cd like '" + sggValue + "___'",
@@ -236,18 +236,11 @@ $(document).ready(function() {
 		  map.getOverlays().forEach(overlay => {
 		  		map.removeOverlay(overlay);
 		  });
-		  // console.log(sdLayerSource.urls);
-		  // console.log(sdLayerSource);
 		  if (sggLayerSource.urls == null) {
 		    alert("시, 군, 구를 출력 후 눌러주세요.");
 		  } else {
-//	    document.getElementById('info').innerHTML = '';
 	      let viewResolution = view.getResolution();
 	      let coordinate = evt.coordinate;
-	      // console.log(sdLayer);
-	      // console.log(evt.coordinate); 
-	      // console.log(viewResolution);
-	      // let info = lineSource.getFeatureInfoUrl(
 	      let info = sggLayerSource.getFeatureInfoUrl(
 	          coordinate, 
 	          viewResolution, 
@@ -282,10 +275,6 @@ $(document).ready(function() {
 	      
 	      let overlay = new ol.Overlay({
 	          element: mapOverlay,
-	          //autoPan: true,
-	          //autoPanAnimation: {
-	          //  duration: 250
-	          //}
 	        });
 	      map.addOverlay(overlay);
 	      overlay.setPosition(coordinate);
