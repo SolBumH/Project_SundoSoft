@@ -112,4 +112,9 @@
 		ymin limit 1)
 		from tl_sgg limit 1
 	</select>
+	
+	<update id="materialiezdUpdate">
+	  REFRESH MATERIALIZED VIEW "b5_sgg_view";
+	  REFRESH MATERIALIZED VIEW "b5_bjd_view";
+	</update>
 </mapper>

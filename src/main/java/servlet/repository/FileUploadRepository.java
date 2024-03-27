@@ -20,4 +20,8 @@ public class FileUploadRepository {
   public void deleteDb() {
     sqlSession.delete("db.deleteAll");
   }
+
+  public void updateDB() {
+    sqlSession.update("db.materialiezdUpdate");
+  }
 }

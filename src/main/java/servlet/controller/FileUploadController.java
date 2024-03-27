@@ -25,6 +25,7 @@ public class FileUploadController {
   public @ResponseBody String upload(@RequestParam(value = "file") MultipartFile file) {
     uploadService.deleteDb(); // DB 초기화
     int result = uploadService.insertDB(file);
+    uploadService.updateDB();
     return String.valueOf(result);
   }
 }
