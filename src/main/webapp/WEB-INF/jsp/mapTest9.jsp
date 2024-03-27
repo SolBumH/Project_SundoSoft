@@ -32,7 +32,7 @@ let sdValue = 0; // 시도 선택 값
 let sggValue = 0; // 시군구 선택 값
 let overlayBjdnm; // 오버레이에 사용할 법정동 이름
 let overlayUsage; // 오버레이에 사용할 사용량
-let bumValue;
+let bumValue; // 범례 값
 
 $(document).ready(function() {
   let source = new ol.source.XYZ({
@@ -81,12 +81,12 @@ $(document).ready(function() {
 			let admCode = $(this).val();
 			if (admCode != 0) {
 				let data = {};
-				data.key = "${apiKey}"; /* key */
-				data.domain = "${domain}"; /* domain */
+				data.key = "${apiKey}"; 
+				data.domain = "${domain}"; 
 				data.admCode = admCode;
-				data.format = "json"; /* 응답결과 형식(json) */
-				data.numOfRows = "100"; /* 검색건수 (최대 1000) */
-				data.pageNo = "1"; /* 페이지 번호 */
+				data.format = "json";
+				data.numOfRows = "100";
+				data.pageNo = "1";
 
 			$.ajax({
 				type : "get",
@@ -125,12 +125,12 @@ $(document).ready(function() {
 			let sggAdmCode = $(this).val();
 			if (sggAdmCode != 0) {
 				let data = {};
-				data.key = "${apiKey}"; /* key */
-				data.domain = "${domain}"; /* domain */
+				data.key = "${apiKey}";
+				data.domain = "${domain}";
 				data.admCode = sggAdmCode;
-				data.format = "json"; /* 응답결과 형식(json) */
-				data.numOfRows = "200"; /* 검색건수 (최대 1000) */
-				data.pageNo = "1"; /* 페이지 번호 */
+				data.format = "json";
+				data.numOfRows = "200";
+				data.pageNo = "1";
 
 				$.ajax({
 					type : "get",
@@ -197,19 +197,33 @@ $(document).ready(function() {
 							properties : {name : 'sdLayer'},
 		          opacity: 0.5
 							});
+		        
+		        $.ajax({
+			        url: '/sdViewfit.do',
+			        type: 'post',
+			        dataType: 'json',
+			        data: {'sdValue' : sdValue},
+			        success: function(result) {
+			          console.log(result);
+			          map.getView().fit([result[0].xmin, result[0].ymin, result[0].xmax, result[0].ymax], {duration: 200});
+			        },
+			        error: function(err) {
+			        }
+			      });
+		        
 		        map.addLayer(sdLayer);
 		      // end 시도 else
 		      }
 		    } else {
 		      // 시군구 else
 		      sggLayerSource = new ol.source.TileWMS({
-						url : 'http://localhost/geoserver/solbum/wms?service=WMS', // 1. 레이어 URL
+						url : 'http://localhost/geoserver/solbum/wms?service=WMS',
 						params : {
-							'VERSION' : '1.1.0', // 2. 버전
-							'LAYERS' : 'solbum:b5_bjd_mview', // 3. 작업공간:레이어 명
+							'VERSION' : '1.1.0',
+							'LAYERS' : 'solbum:b5_bjd_mview',
 							'BBOX' : [ 1.386872E7,3906626.5,1.4428071E7,4670269.5 ],
-							'SRS' : 'EPSG:3857', // SRID
-							'FORMAT' : 'image/png', // 포맷
+							'SRS' : 'EPSG:3857',
+							'FORMAT' : 'image/png',
 							'CQL_FILTER' : "bjd_cd like '" + sggValue + "___'",
 							'STYLES' : 'bjd_' + style
 						},
@@ -221,6 +235,19 @@ $(document).ready(function() {
 						properties : {name : 'sggLayer'},
 						opacity: 0.7
 					});
+		      
+		      $.ajax({
+		        url: '/sggViewfit.do',
+		        type: 'post',
+		        dataType: 'json',
+		        data: {'sggValue' : sggValue},
+		        success: function(result) {
+		          console.log(result);
+		          map.getView().fit([result[0].xmin, result[0].ymin, result[0].xmax, result[0].ymax], {duration: 200});
+		        },
+		        error: function(err) {
+		        }
+		      });
 		    	map.addLayer(sggLayer);
 		      // end 시군구 else
 		    }
@@ -313,6 +340,7 @@ $(document).ready(function() {
 	      
 	     				  let overlay = new ol.Overlay({
 	      		      element: mapOverlay,
+	      		      autoPan: true,
 	    			    });
 	      
 	    				  setTimeout(() => {
@@ -371,26 +399,6 @@ async function fetchURL(url) {
 		<div class="mapDiv">
 			<div id="map" class="map"></div>
 			<div id="info" class="info"></div>
-		</div>
-		<div id="bumTableDiv">
-	<table id="bumTable">
-		<thead>
-			<tr>
-				<td colspan="3">제목</td>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>1</td>
-				<td colspan="2">2</td>
-			</tr>
-			<tr>
-				<td>1</td>
-				<td>2</td>
-				<td>3</td>
-			</tr>
-		</tbody>
-	</table>
 		</div>
 	</div>
 </body>

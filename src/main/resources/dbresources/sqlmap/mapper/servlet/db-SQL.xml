@@ -2,79 +2,114 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="db">
 	<delete id="deleteAll">
-		TRUNCATE TABLE "TB_CARBON_B5" 
+		TRUNCATE TABLE "TB_CARBON_B5"
 	</delete>
-	
+
 	<insert id="dbTest" parameterType="list">
-		insert into "TB_CARBON_B5" ("yearMonthUse", "landLocation", "roadLandLocation", 
-		"sggCode", "bjdCode", "landCode", bun, ji, "newAddNumber", "newRoadCode", "newLandCode",
+		insert into "TB_CARBON_B5" ("yearMonthUse", "landLocation",
+		"roadLandLocation",
+		"sggCode", "bjdCode", "landCode", bun, ji, "newAddNumber", "newRoadCode",
+		"newLandCode",
 		newbonbeon, newbubeon, usage)
-		values 
-		<foreach collection="list" item="list" index="index" open="(" close=")" separator=",">
-		  #{list[0]}
-		  ,#{list[1]}
-		  ,#{list[2]}
-		  ,#{list[3]}
-		  ,#{list[4]}
-		  ,#{list[5]}
-		  ,#{list[6]}
-		  ,#{list[7]}
-		  ,#{list[8]}
-		  ,#{list[9]}
-		  ,#{list[10]}
-		  ,#{list[11]}
-		  ,#{list[12]}
-		  ,#{list[13]}
+		values
+		<foreach collection="list" item="list" index="index" open="("
+			close=")" separator=",">
+			#{list[0]}
+			,#{list[1]}
+			,#{list[2]}
+			,#{list[3]}
+			,#{list[4]}
+			,#{list[5]}
+			,#{list[6]}
+			,#{list[7]}
+			,#{list[8]}
+			,#{list[9]}
+			,#{list[10]}
+			,#{list[11]}
+			,#{list[12]}
+			,#{list[13]}
 		</foreach>
 	</insert>
-	
+
 	<insert id="dbTest2" parameterType="list">
-		<foreach collection="list" item="list" index="index" separator=";">
-		insert into "TB_CARBON_B5" ("yearMonthUse", "landLocation")
-		values 
-		  (#{list.yearMonthUse},#{list.landLocation})
+		<foreach collection="list" item="list" index="index"
+			separator=";">
+			insert into "TB_CARBON_B5" ("yearMonthUse", "landLocation")
+			values
+			(#{list.yearMonthUse},#{list.landLocation})
 		</foreach>
 	</insert>
-	
+
 	<insert id="dbTest3" parameterType="list">
 		insert into "TB_CARBON_B5"
-		values 
-		<foreach collection="list" item="list" index="index" separator=",">
-		  (#{list.yearMonthUse},#{list.landLocation}, #{list.roadLandLocation}
-		  , #{list.sggCode}, #{list.bjdCode}, #{list.landCode}, #{list.bun}
-		  , #{list.ji}, #{list.newAddNumber}, #{list.newRoadCode}
-		  , #{list.newLandCode}, #{list.newbonbeon}, #{list.newbubeon}
-		  , #{list.usage})
+		values
+		<foreach collection="list" item="list" index="index"
+			separator=",">
+			(#{list.yearMonthUse},#{list.landLocation}, #{list.roadLandLocation}
+			, #{list.sggCode}, #{list.bjdCode}, #{list.landCode}, #{list.bun}
+			, #{list.ji}, #{list.newAddNumber}, #{list.newRoadCode}
+			, #{list.newLandCode}, #{list.newbonbeon}, #{list.newbubeon}
+			, #{list.usage})
 		</foreach>
 	</insert>
-	
+
 	<insert id="dbTest4" parameterType="list">
 		insert into "TB_CARBON_B5" ("sggCode", "bjdCode", "usage")
-		values 
-		<foreach collection="list" item="list" index="index" separator=",">
-		  (#{list.sggCode}, #{list.bjdCode}, #{list.usage})
+		values
+		<foreach collection="list" item="list" index="index"
+			separator=",">
+			(#{list.sggCode}, #{list.bjdCode}, #{list.usage})
 		</foreach>
 	</insert>
-	
+
 	<select id="sdList" resultType="hashMap">
 		select sd_nm, sd_cd from tl_sd
 	</select>
-	
+
 	<select id="sdUsage" resultType="hashMap">
-		select tcb.sd_cd as "citiCd", ts.sd_nm as "cityNm", tcb.usage 
-    from (select substring("sggCode", 1, 2) as sd_cd, sum(usage) as usage
-    from "TB_CARBON_B5"
-    group by sd_cd) tcb join tl_sd ts 
-    on tcb.sd_cd = ts.sd_cd
+		select tcb.sd_cd as "citiCd",
+		ts.sd_nm as "cityNm", tcb.usage
+		from (select substring("sggCode", 1, 2) as sd_cd, sum(usage) as usage
+		from "TB_CARBON_B5"
+		group by sd_cd) tcb join tl_sd ts
+		on tcb.sd_cd = ts.sd_cd
 	</select>
 
-	<select id="sggUsage" parameterType="String" resultType="hashMap">
-		select ts.sgg_cd as "cityCd", ts.sgg_nm as "cityNm", tcb.usage 
-    from
-    (select "sggCode", sum(usage) as usage
-    from "TB_CARBON_B5"
-    where substring("sggCode", 1, 2) = #{sd_cd}
-    group by "sggCode") tcb join tl_sgg ts 
-    on tcb."sggCode" = ts.sgg_cd
+	<select id="sggUsage" parameterType="String"
+		resultType="hashMap">
+		select ts.sgg_cd as "cityCd", ts.sgg_nm as "cityNm",
+		tcb.usage
+		from
+		(select "sggCode", sum(usage) as usage
+		from "TB_CARBON_B5"
+		where substring("sggCode", 1, 2) = #{sd_cd}
+		group by "sggCode") tcb join tl_sgg ts
+		on tcb."sggCode" = ts.sgg_cd
+	</select>
+
+	<select id="getSdCoordinate" parameterType="String" resultType="map">
+		select
+		(select ST_XMax(geom) as xmax FROM tl_sd WHERE sd_cd = #{sd_cd} order by xmax
+		desc limit 1)
+		,(select ST_YMax(geom) as ymax FROM tl_sd WHERE sd_cd =#{sd_cd} order by ymax
+		desc limit 1)
+		,(select ST_XMin(geom) as xmin FROM tl_sd WHERE sd_cd = #{sd_cd} order by xmin
+		limit 1)
+		,(select ST_YMin(geom) as ymin FROM tl_sd WHERE sd_cd = #{sd_cd} order by ymin
+		limit 1)
+		from tl_sd limit 1
+	</select>
+
+	<select id="getSggCoordinate" parameterType="String" resultType="map">
+		select
+		(select ST_XMax(geom) as xmax FROM tl_sgg WHERE sgg_cd = #{sgg_cd} order by
+		xmax desc limit 1)
+		,(select ST_YMax(geom) as ymax FROM tl_sgg WHERE sgg_cd =#{sgg_cd} order by
+		ymax desc limit 1)
+		,(select ST_XMin(geom) as xmin FROM tl_sgg WHERE sgg_cd = #{sgg_cd} order by
+		xmin limit 1)
+		,(select ST_YMin(geom) as ymin FROM tl_sgg WHERE sgg_cd = #{sgg_cd} order by
+		ymin limit 1)
+		from tl_sgg limit 1
 	</select>
 </mapper>
