@@ -91,28 +91,33 @@ function reset() {
 					<option class="" value="${list.sd_cd }">${list.sd_nm }</option>
 				</c:forEach>
 			</select>
-			<button class="btn btn-outline-dark" id="sdUsageBtn" onclick="return sggUsage()">출력하기</button>
+			<button class="btn btn-outline-dark" id="sdUsageBtn"
+				onclick="return sggUsage()">출력하기</button>
 			<button class="btn btn-outline-dark" id="resetBtn" onclick="reset()">초기화</button>
 		</div>
 		<div class="chart">
 			<div id="chart_div"></div>
-			<div id="chart_table" class="table">
-				<table class="table">
-					<thead>
-						<tr>
-							<th>도시명</th>
-							<th>에너지 사용량</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach items="${usageList }" var="usage">
+			<div id="chart_table">
+				<div class="text-end">단위 : KWh</div>
+				<div class="chart_table">
+					<table class="table">
+						<thead>
 							<tr>
-								<td>${usage.cityNm }</td>
-								<td><fmt:formatNumber value="${usage.usage }" pattern="###,###" /></td>
+								<th>도시명</th>
+								<th>에너지 사용량</th>
 							</tr>
-						</c:forEach>
-					</tbody>
-				</table>
+						</thead>
+						<tbody>
+							<c:forEach items="${usageList }" var="usage">
+								<tr>
+									<td>${usage.cityNm }</td>
+									<td><fmt:formatNumber value="${usage.usage }"
+											pattern="###,###" /></td>
+								</tr>
+							</c:forEach>
+						</tbody>
+					</table>
+				</div>
 			</div>
 		</div>
 	</div>

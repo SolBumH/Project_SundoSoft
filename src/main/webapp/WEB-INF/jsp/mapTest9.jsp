@@ -4,7 +4,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html lang="ko">
 <head>
-<title>map8</title>
+<title>map9</title>
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -236,8 +236,50 @@ $(document).ready(function() {
 		  map.getOverlays().forEach(overlay => {
 		  		map.removeOverlay(overlay);
 		  });
-		  if (sggLayerSource.urls == null) {
-		    alert("시, 군, 구를 출력 후 눌러주세요.");
+		  if (sggLayerSource.urls == null && sdLayerSource.urls == null) {
+		    alert("레이어를 출력 후 클릭해주세요.");
+		  } else if (sdLayerSource.urls != null && sggLayerSource.urls == null) {
+		    let viewResolution = view.getResolution();
+	      let coordinate = evt.coordinate;
+	      let info = sdLayerSource.getFeatureInfoUrl(
+	          coordinate, 
+	          viewResolution, 
+	          'EPSG:3857',
+	          {'INFO_FORMAT': 'application/json'}
+	        );
+	      if (info) {
+	        let result = fetchURL(info);
+	        // fetch(info).then(result => result.json())
+	          result.then(function(res) {
+	            if (res.features[0] == null) {
+	              alert("정확한 위치를 클릭해주세요.");
+	            } else {
+	              overlaySggnm = res.features[0].properties.sgg_nm
+	              overlayUsage = res.features[0].properties.usage.toLocaleString('ko-KR');
+	      
+	              let mapOverlay = document.createElement('div');
+	              mapOverlay.setAttribute('class', 'mapOverlay');
+	      			  let sgg_nm = document.createElement('div');
+	      			  sgg_nm.setAttribute('class', 'layer_nm');
+	  				    mapOverlay.appendChild(sgg_nm);
+	    				  let sgg_usage = document.createElement('div');
+	    				  sgg_usage.setAttribute('class', 'layer_usage');
+	  	 				  mapOverlay.appendChild(sgg_usage);
+	  				    document.body.appendChild(mapOverlay);
+	 					    sgg_nm.innerHTML = '<div>지역 : ' + overlaySggnm + '</div>';
+	 					    sgg_usage.innerHTML = '<div>사용량 : ' + overlayUsage + ' KWh</div>';
+	      
+	     				  let overlay = new ol.Overlay({
+	      		      element: mapOverlay,
+	    			    });
+	      
+	    				  setTimeout(() => {
+  	    				  map.addOverlay(overlay);
+	      				  overlay.setPosition(coordinate);
+	    				  }, 500);
+	            }
+	        });
+	      }
 		  } else {
 	      let viewResolution = view.getResolution();
 	      let coordinate = evt.coordinate;
@@ -260,10 +302,10 @@ $(document).ready(function() {
 	              let mapOverlay = document.createElement('div');
 	              mapOverlay.setAttribute('class', 'mapOverlay');
 	      			  let bjd_nm = document.createElement('div');
-	   					  bjd_nm.setAttribute('class', 'bjd_nm');
+	   					  bjd_nm.setAttribute('class', 'layer_nm');
 	  				    mapOverlay.appendChild(bjd_nm);
 	    				  let bjd_usage = document.createElement('div');
-	  				    bjd_usage.setAttribute('class', 'bjd_usage');
+	  				    bjd_usage.setAttribute('class', 'layer_usage');
 	  	 				  mapOverlay.appendChild(bjd_usage);
 	  				    document.body.appendChild(mapOverlay);
 	 					    bjd_nm.innerHTML = '<div>지역 : ' + overlayBjdnm + '</div>';
@@ -329,6 +371,26 @@ async function fetchURL(url) {
 		<div class="mapDiv">
 			<div id="map" class="map"></div>
 			<div id="info" class="info"></div>
+		</div>
+		<div id="bumTableDiv">
+	<table id="bumTable">
+		<thead>
+			<tr>
+				<td colspan="3">제목</td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td colspan="2">2</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td>2</td>
+				<td>3</td>
+			</tr>
+		</tbody>
+	</table>
 		</div>
 	</div>
 </body>
