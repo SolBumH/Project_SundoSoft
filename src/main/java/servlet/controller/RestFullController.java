@@ -3,7 +3,6 @@ package servlet.controller;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
@@ -60,14 +59,14 @@ public class RestFullController {
 	}
 	
 	@RequestMapping(value = "/sggViewfit.do", method = RequestMethod.POST, produces = "application/json; charset=utf8")
-  public List<Map<String, Object>> sggViewfit(@RequestParam("sggValue") String sggValue) {
-    List<Map<String, Object>> list = restService.getSggCoordinate(sggValue);
-    return list;
+  public Map<String, Object> sggViewfit(@RequestParam("sggValue") String sggValue) {
+    Map<String, Object> geom = restService.getSggCoordinate(sggValue);
+    return geom;
   }
 	
 	@RequestMapping(value = "/sdViewfit.do", method = RequestMethod.POST, produces = "application/json; charset=utf8")
-  public List<Map<String, Object>> sdViewfit(@RequestParam("sdValue") String sdValue) {
-    List<Map<String, Object>> list = restService.getSdCoordinate(sdValue);
-    return list;
+  public Map<String, Object> sdViewfit(@RequestParam("sdValue") String sdValue) {
+	  Map<String, Object> geom = restService.getSdCoordinate(sdValue);
+    return geom;
   }
 }

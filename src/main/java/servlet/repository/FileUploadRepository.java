@@ -14,7 +14,7 @@ public class FileUploadRepository {
   private SqlSession sqlSession;
 
   public int insertDB(List<Map<String, Object>> list) {
-    return sqlSession.insert("db.dbTest4", list);
+    return sqlSession.insert("db.insertData", list);
   }
 
   public void deleteDb() {
@@ -22,6 +22,6 @@ public class FileUploadRepository {
   }
 
   public void updateDB() {
-    sqlSession.update("db.materialiezdUpdate");
+    sqlSession.update("db.updateMaterialized");
   }
 }

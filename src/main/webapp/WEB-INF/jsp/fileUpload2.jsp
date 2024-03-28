@@ -24,9 +24,6 @@ $(document).ready(function(){
 		
     if (fileName === 'txt') {
       let file = new FormData($('#uploadForm')[0]);
-      let toastLive = document.getElementById('uploadToast');
-      let toast = new bootstrap.Toast(toastLive);
-      toast.show();
       $.ajax({
         url : '/upload.do',
         type : 'post',
@@ -39,10 +36,6 @@ $(document).ready(function(){
         success : function(result) {
           alert(result + " 건 입력 완료");
           $('#file').val(""); // input 창 초기화
-          toast.hide();
-          toastLive = document.getElementById('finishToast');
-          toast = new bootstrap.Toast(toastLive);
-          toast.show();
         },
         error : function(error) {
           alert('에러');
@@ -60,17 +53,6 @@ $(document).ready(function(){
 	<div id="linkbar" class="">
 		<%@ include file="menu.jsp" %>
 	</div>
-	<div id="uploadToast" class="toast top-30 start-50 translate-middle-x" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-    <div class="toast-header">
-      <strong id="toast-message" class="me-auto">파일 업로드 중..</strong>
-    </div>
-	</div>
-	<div id="finishToast" class="toast top-30 start-50 translate-middle-x" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-    <div class="toast-header">
-      <strong id="toast-message" class="me-auto">파일 업로드 완료</strong>
-      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
-    </div>
-	</div>
 	<div id="main">
 		<div class="pageName">파일 업로드</div>
 		<h5>데이터는 최대 200만개 까지만 추가됩니다.</h5>
@@ -80,7 +62,7 @@ $(document).ready(function(){
 					accept=".txt" />
 			</form>
 			<button id="uploadBtn" class="btn btn-outline-dark">업로드</button>
-		</div><!-- 업로드 form div 끝 -->
-  </div>
+		</div>
+	</div>
 </body>
 </html>

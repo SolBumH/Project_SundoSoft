@@ -18,7 +18,7 @@ public class FileUploadController {
 
   @RequestMapping(value = "/fileUpload.do", method = RequestMethod.GET)
   public String fileUpload() {
-    return "fileUpload2";
+    return "fileUpload";
   }
 
   @RequestMapping(value = "/upload.do", method = RequestMethod.POST)

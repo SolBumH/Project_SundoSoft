@@ -5,55 +5,7 @@
 		TRUNCATE TABLE "TB_CARBON_B5"
 	</delete>
 
-	<insert id="dbTest" parameterType="list">
-		insert into "TB_CARBON_B5" ("yearMonthUse", "landLocation",
-		"roadLandLocation",
-		"sggCode", "bjdCode", "landCode", bun, ji, "newAddNumber", "newRoadCode",
-		"newLandCode",
-		newbonbeon, newbubeon, usage)
-		values
-		<foreach collection="list" item="list" index="index" open="("
-			close=")" separator=",">
-			#{list[0]}
-			,#{list[1]}
-			,#{list[2]}
-			,#{list[3]}
-			,#{list[4]}
-			,#{list[5]}
-			,#{list[6]}
-			,#{list[7]}
-			,#{list[8]}
-			,#{list[9]}
-			,#{list[10]}
-			,#{list[11]}
-			,#{list[12]}
-			,#{list[13]}
-		</foreach>
-	</insert>
-
-	<insert id="dbTest2" parameterType="list">
-		<foreach collection="list" item="list" index="index"
-			separator=";">
-			insert into "TB_CARBON_B5" ("yearMonthUse", "landLocation")
-			values
-			(#{list.yearMonthUse},#{list.landLocation})
-		</foreach>
-	</insert>
-
-	<insert id="dbTest3" parameterType="list">
-		insert into "TB_CARBON_B5"
-		values
-		<foreach collection="list" item="list" index="index"
-			separator=",">
-			(#{list.yearMonthUse},#{list.landLocation}, #{list.roadLandLocation}
-			, #{list.sggCode}, #{list.bjdCode}, #{list.landCode}, #{list.bun}
-			, #{list.ji}, #{list.newAddNumber}, #{list.newRoadCode}
-			, #{list.newLandCode}, #{list.newbonbeon}, #{list.newbubeon}
-			, #{list.usage})
-		</foreach>
-	</insert>
-
-	<insert id="dbTest4" parameterType="list">
+	<insert id="insertData" parameterType="list">
 		insert into "TB_CARBON_B5" ("sggCode", "bjdCode", "usage")
 		values
 		<foreach collection="list" item="list" index="index"
@@ -113,7 +65,7 @@
 		from tl_sgg limit 1
 	</select>
 	
-	<update id="materialiezdUpdate">
+	<update id="updateMaterialized">
 	  REFRESH MATERIALIZED VIEW "b5_sgg_view";
 	  REFRESH MATERIALIZED VIEW "b5_bjd_view";
 	</update>
