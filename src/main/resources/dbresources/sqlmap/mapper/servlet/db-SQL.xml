@@ -67,6 +67,78 @@
 	
 	<update id="updateMaterialized">
 	  REFRESH MATERIALIZED VIEW "b5_sgg_view";
+	  REFRESH MATERIALIZED VIEW "b5_dgg_sgg_view";
 	  REFRESH MATERIALIZED VIEW "b5_bjd_view";
+	  REFRESH MATERIALIZED VIEW "b5_dgg_bjd_view";
 	</update>
+	
+	<select id="getBjdBum" parameterType="Integer" resultType="hashMap">
+		<choose>
+			<when test="level eq 1">
+				select 
+				coalesce(lag(usage, 1) over (order by usage), 0) as lag,
+				usage
+				from 
+				(select max(usage) as usage
+					from b5_bjd_view
+					group by natural_grade
+					order by usage) bdbv
+			</when>
+			<when test="level eq 2">
+				select 
+				coalesce(lag(usage, 1) over (order by usage), 0) as lag,
+				usage
+				from 
+				(select max(usage) as usage
+					from b5_bjd_view
+					group by dgg_grade
+					order by usage) bdbv
+			</when>
+			<when test="level eq 3">
+				select 
+				coalesce(lag(usage, 1) over (order by usage), 0) as lag,
+				usage
+				from
+				(select max(usage) as usage
+					from b5_dgg_bjd_view
+					group by dgg_grade
+					order by usage) bdbv
+			</when>
+		</choose>
+	</select>
+	
+	<select id="getSggBum" parameterType="Integer" resultType="hashMap">
+		<choose>
+			<when test="level eq 1">
+				select 
+				coalesce(lag(usage, 1) over (order by usage), 0) as lag,
+				usage
+				from 
+				(select max(usage) as usage
+					from b5_sgg_view
+					group by natural_grade
+					order by usage) bdbv
+			</when>
+			<when test="level eq 2">
+				select 
+				coalesce(lag(usage, 1) over (order by usage), 0) as lag,
+				usage
+				from 
+				(select max(usage) as usage
+					from b5_sgg_view
+					group by dgg_grade
+					order by usage) bdbv
+			</when>
+			<when test="level eq 3">
+				select 
+				coalesce(lag(usage, 1) over (order by usage), 0) as lag,
+				usage
+				from 
+				(select max(usage) as usage
+					from b5_dgg_sgg_view
+					group by dgg_grade
+					order by usage) bdbv
+			</when>
+		</choose>
+	</select>
 </mapper>

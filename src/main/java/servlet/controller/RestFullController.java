@@ -3,6 +3,7 @@ package servlet.controller;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.List;
 import java.util.Map;
 
 import org.json.simple.JSONArray;
@@ -68,5 +69,21 @@ public class RestFullController {
   public Map<String, Object> sdViewfit(@RequestParam("sdValue") String sdValue) {
 	  Map<String, Object> geom = restService.getSdCoordinate(sdValue);
     return geom;
+  }
+	
+	@RequestMapping(value = "/getBjdBum.do", method = RequestMethod.POST)
+	public List<Map<String, Object>> getBjdBum(@RequestParam(value = "level") int level) {
+	  System.out.println(level);
+	  List<Map<String, Object>> list = restService.getBjdBum(level);
+	  System.out.println(list);
+	  return list;
+	}
+	
+	@RequestMapping(value = "/getSggBum.do", method = RequestMethod.POST)
+  public List<Map<String, Object>> getSggBum(@RequestParam(value = "level") int level) {
+    System.out.println(level);
+    List<Map<String, Object>> list = restService.getSggBum(level);
+    System.out.println(list);
+    return list;
   }
 }

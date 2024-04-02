@@ -1,5 +1,6 @@
 package servlet.impl;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,5 +20,13 @@ public class RestFullService {
 
   public Map<String, Object> getSggCoordinate(String sggValue) {
     return restRepository.getSggCoordinate(sggValue);
+  }
+  
+  public List<Map<String, Object>> getBjdBum(int level) {
+    return restRepository.getBjdBum(level);
+  }
+
+  public List<Map<String, Object>> getSggBum(int level) {
+    return restRepository.getSggBum(level);
   }
 }

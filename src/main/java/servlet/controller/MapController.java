@@ -35,6 +35,6 @@ public class MapController {
     } catch (Exception e) {
       return "redirect:/error.do";
     }
-    return "map";
+    return "map_final";
   }
 }

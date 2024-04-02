@@ -1,5 +1,6 @@
 package servlet.repository;
 
+import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.session.SqlSession;
@@ -18,5 +19,13 @@ public class RestFullRepository {
 
   public Map<String, Object> getSggCoordinate(String sggValue) {
     return sqlSession.selectOne("db.getSggCoordinate", sggValue);
+  }
+
+  public List<Map<String, Object>> getBjdBum(int level) {
+    return sqlSession.selectList("db.getBjdBum", level);
+  }
+
+  public List<Map<String, Object>> getSggBum(int level) {
+    return sqlSession.selectList("db.getSggBum", level);
   }
 }
