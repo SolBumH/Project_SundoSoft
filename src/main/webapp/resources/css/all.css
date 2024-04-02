@@ -123,3 +123,95 @@ th {
 .btn-close {
 	margin-right: 5px;
 }
+
+.MapTableDiv {
+	display: inline-block;
+	position: absolute;
+	z-index: 100000;
+	bottom: 30px;
+	right: 25px;
+	background-color: rgb(248, 249, 250);
+}
+
+.blue_grade_0 {
+	background-color: #f7fbff;
+	border: 1px solid black;
+	width: 25%;
+}
+
+.blue_grade_1 {
+	background-color: #c8dcf0;
+	border: 1px solid black;
+	width: 25%;
+}
+
+.blue_grade_2 {
+	background-color: #73b2d8;
+	border: 1px solid black;
+	width: 25%;
+}
+
+.blue_grade_3 {
+	background-color: #2979b9;
+	border: 1px solid black;
+	width: 25%;
+}
+
+.blue_grade_4 {
+	background-color: #08306b;
+	border: 1px solid black;
+	width: 25%;
+}
+
+.red_grade_0 {
+	background-color: #ffffff;
+	border: 1px solid black;
+	width: 25%;
+}
+
+.red_grade_1 {
+	background-color: #ffbfbf;
+	border: 1px solid black;
+	width: 25%;
+}
+
+.red_grade_2 {
+	background-color: #ff8080;
+	border: 1px solid black;
+	width: 25%;
+}
+
+.red_grade_3 {
+	background-color: #ff4040;
+	border: 1px solid black;
+	width: 25%;
+}
+
+.red_grade_4 {
+	background-color: #ff0000;
+	border: 1px solid black;
+	width: 25%;
+}
+
+.MapTable.beforeTable {
+	height: 200px;
+}
+
+.beforeTable {
+	height: 40px;
+	width: 180px;
+	border: 2px solid black;
+}
+
+th, td {
+	border-bottom: 1px solid rgb(50, 50, 50);
+	text-align: center;
+}
+
+th {
+	height: 40px;
+}
+
+tr {
+	height: 35px;
+}
