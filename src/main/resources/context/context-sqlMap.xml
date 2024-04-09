@@ -11,8 +11,8 @@
         <property name="configLocation" value="classpath:/dbresources/sql-map-config.xml" />
         <property name="mapperLocations">
         	<list>
-				<value>classpath:/dbresources/sqlmap/mapper/**/*-SQL.xml</value>
-			</list>
+				    <value>classpath:/dbresources/sqlmap/mapper/**/*-SQL.xml</value>
+			    </list>
         </property>
     </bean>
     
