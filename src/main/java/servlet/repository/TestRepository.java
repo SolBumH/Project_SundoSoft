@@ -16,4 +16,8 @@ public class TestRepository {
   public List<Object> cdbTest() {
     return session.selectList("test.getCDBFunction");
   }
+
+  public void insertDB(List<Map<String, Object>> list) {
+    session.insert("test.dbTest3", list);
+  }
 }

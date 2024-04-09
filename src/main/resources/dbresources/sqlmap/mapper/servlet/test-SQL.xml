@@ -10,5 +10,15 @@
 		from b5_sd_view bsv 
 	</select>
 	
-	
+	<insert id="dbTest3" parameterType="list">
+		insert into "TB_CARBON_B5"
+		values
+		<foreach collection="list" item="list" index="index" separator=",">
+			(#{list.yearMonthUse},#{list.landLocation}, #{list.roadLandLocation}
+			, #{list.sggCode}, #{list.bjdCode}, #{list.landCode}, #{list.bun}
+			, #{list.ji}, #{list.newAddNumber}, #{list.newRoadCode}
+			, #{list.newLandCode}, #{list.newbonbeon}, #{list.newbubeon}
+			, #{list.usage})
+		</foreach>
+	</insert>
 </mapper>
