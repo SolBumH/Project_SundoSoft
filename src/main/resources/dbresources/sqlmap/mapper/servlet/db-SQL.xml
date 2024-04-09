@@ -8,8 +8,7 @@
 	<insert id="insertData" parameterType="list">
 		insert into "TB_CARBON_B5" ("sggCode", "bjdCode", "usage")
 		values
-		<foreach collection="list" item="list" index="index"
-			separator=",">
+		<foreach collection="list" item="list" index="index" separator=",">
 			(#{list.sggCode}, #{list.bjdCode}, #{list.usage})
 		</foreach>
 	</insert>
@@ -21,21 +20,23 @@
 	<select id="sdUsage" resultType="hashMap">
 		select tcb.sd_cd as "citiCd",
 		ts.sd_nm as "cityNm", tcb.usage
-		from (select substring("sggCode", 1, 2) as sd_cd, sum(usage) as usage
-		from "TB_CARBON_B5"
-		group by sd_cd) tcb join tl_sd ts
+		from 
+		(select substring("sggCode", 1, 2) as sd_cd, sum(usage) as usage
+		  from "TB_CARBON_B5"
+		  group by sd_cd) tcb
+		join tl_sd ts
 		on tcb.sd_cd = ts.sd_cd
 	</select>
 
-	<select id="sggUsage" parameterType="String"
-		resultType="hashMap">
+	<select id="sggUsage" parameterType="String" resultType="hashMap">
 		select ts.sgg_cd as "cityCd", ts.sgg_nm as "cityNm",
 		tcb.usage
 		from
 		(select "sggCode", sum(usage) as usage
-		from "TB_CARBON_B5"
-		where substring("sggCode", 1, 2) = #{sd_cd}
-		group by "sggCode") tcb join tl_sgg ts
+		  from "TB_CARBON_B5"
+		  where substring("sggCode", 1, 2) = #{sd_cd}
+		  group by "sggCode") tcb
+		join tl_sgg ts
 		on tcb."sggCode" = ts.sgg_cd
 	</select>
 

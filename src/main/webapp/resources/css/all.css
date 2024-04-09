@@ -116,7 +116,7 @@ th {
 	margin: 0 auto;
 }
 
-#uploadToast, #finishToast {
+#uploadToast, #finishToast, #failToast {
 	position: fixed;
 }
 

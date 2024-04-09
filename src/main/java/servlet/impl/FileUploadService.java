@@ -46,7 +46,7 @@ public class FileUploadService {
 //        map.put("landLocation" ,str[1]);
 //        map.put("roadLandLocation" ,str[2]);
         map.put("sggCode" ,str[3]);
-        map.put("bjdCode" ,str[4]);
+        map.put("bjdCode" ,str[4]); 
 //        map.put("landCode" ,str[5]);
 //        map.put("bun" ,str[6]);
 //        map.put("ji" ,str[7]);

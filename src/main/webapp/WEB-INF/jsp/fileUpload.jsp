@@ -45,13 +45,21 @@ $(document).ready(function(){
           toast.show();
         },
         error : function(error) {
-          alert('에러');
+          $('#file').val(""); // input 창 초기화
+          toast.hide();
+          toastLive = document.getElementById('failToast');
+          toast = new bootstrap.Toast(toastLive);
+          toast.show();
         }
       });
     } else {
       alert('txt 파일만 등록 가능합니다.');
       $('#file').val("");
     }
+  });
+  
+  $('.btn-close').on('click', function() {
+    $(this).parent().parent().hide();
   });
 });
 </script>
@@ -68,6 +76,12 @@ $(document).ready(function(){
 	<div id="finishToast" class="toast top-30 start-50 translate-middle-x" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
     <div class="toast-header">
       <strong id="toast-message" class="me-auto">파일 업로드 완료</strong>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+	</div>
+	<div id="failToast" class="toast top-30 start-50 translate-middle-x" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+    <div class="toast-header">
+      <strong id="toast-message" class="me-auto">파일 업로드 실패</strong>
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
 	</div>
