@@ -23,9 +23,18 @@ public class FileUploadController {
 
   @RequestMapping(value = "/upload.do", method = RequestMethod.POST)
   public @ResponseBody String upload(@RequestParam(value = "file") MultipartFile file) {
+    Long start = System.currentTimeMillis();
     uploadService.deleteDb(); // DB 초기화
-    int result = uploadService.insertDB(file);
+    int result = 0;
+    try {
+      // result = uploadService.insertDBTest(file);
+      result = uploadService.insertDB(file);
+    } catch (Exception e) {
+      e.printStackTrace();
+    }
     uploadService.updateDB(); // Materialized View 갱신
+    Long finish = System.currentTimeMillis();
+    System.out.println("걸린 시간 : " + (finish - start) / 1000 + " 초");
     return String.valueOf(result);
   }
 }

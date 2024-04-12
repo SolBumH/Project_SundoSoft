@@ -3,7 +3,11 @@ package servlet.impl;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -77,5 +81,54 @@ public class FileUploadService {
 
   public void updateDB() {
     fileUploadRepository.updateDB();
+  }
+  
+  public int insertDBTest(MultipartFile file) throws Exception {
+    Class.forName("org.postgresql.Driver");
+    // Class.forName("net.sf.log4jdbc.DriverSpy"); // Log 남는 class
+    Connection conn = DriverManager.getConnection(url, id, pw);
+    PreparedStatement pstmt = null;
+    String sql = "insert into \"TB_CARBON_B5\" (\"sggCode\", \"bjdCode\", \"usage\")" + 
+        " values (?, ?, ?)";
+    
+    pstmt = conn.prepareStatement(sql);
+    
+    int i = 0;
+    try {
+      BufferedReader br = new BufferedReader(new InputStreamReader(file.getInputStream()));
+      String line;
+      while ((line = br.readLine()) != null) {
+        if (i == 2000000) {
+          pstmt.executeBatch();
+          pstmt.clearBatch();
+          // conn.commit(); 
+          break;
+        }
+        if (i % 10000 == 0) {
+          pstmt.executeBatch();
+          pstmt.clearBatch();
+          // conn.commit(); auto 커밋 실행 중
+        }
+        String[] str = line.split("\\|");
+        // System.out.println(Arrays.deepToString(str));
+        pstmt.setString(1, str[3]);
+        pstmt.setString(2, str[4]); 
+        pstmt.setInt(3, util.str2int(str[13]));
+        pstmt.addBatch();
+        pstmt.clearParameters();
+        i++;
+      }
+      br.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+    } finally {
+      if (pstmt != null) {
+        pstmt.close();
+      }
+      if (conn != null) {
+        conn.close();
+      }
+    }
+    return i;
   }
 }
