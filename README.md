@@ -13,15 +13,14 @@
 ## 일정
 
 - 24.03.14 ~ 24.04.11
-- 참여도 : 100% (팀 프로젝트이나 사측 요청으로 개인 개발)
+- 참여도 : 100% (팀 프로젝트이나 회사 요청으로 개인 개발 진행)
 
 ## 사용 기술 및 개발 환경
 
 - OS : Windows 11
 - Server : Apache Tomcat 8.5.99, Geoserver 2.22.5
 - DB : PostgreSQL 14.4
-- Framework/Flatform : eGovFrame 3.10, Mybatis, Openlayers, jQuery
-- Language : Java, JSP
+- Framework/Language : eGovFrame 3.10, Mybatis, Openlayers, jQuery, JDK 1.8, JSP
 - Tool : Eclipse, Git, GitHub
 
 ## 내용
