@@ -229,26 +229,26 @@ data.numOfRows = "200";
 data.pageNo = "1";
 
 $.ajax({
-	type : "get",
-	dataType : "jsonp",
-	url : "http://api.vworld.kr/ned/data/admDongList",
-	data : data,
-	async : false,
-	success : function(data) {
+  type : "get",
+  dataType : "jsonp",
+  url : "http://api.vworld.kr/ned/data/admDongList",
+  data : data,
+  async : false,
+  success : function(data) {
     $('.sggOption').remove();
-		$('.bjdOption').remove();
-		$('#sggList').append($('<option class="sggOption" value="0">-- 시, 군, 구 선택 --</option>'));
-		$('#bjdList').append($('<option class="bjdOption" value="0">-- 읍, 면, 동 선택 --</option>'));
-		let adm = data.admVOList.admVOList;
-		for (let i = 0; i < adm.length; i++) {
-			let sggHtml = $("<option></option>");
-			sggHtml.attr('value', adm[i].admCode);
-			sggHtml.attr('class', 'sggOption');
-			sggHtml.append(adm[i].lowestAdmCodeNm);
-			$('#sggList').append(sggHtml);
-		}
-	},
-	error : function(xhr, stat, err) {}
+    $('.bjdOption').remove();
+    $('#sggList').append($('<option class="sggOption" value="0">-- 시, 군, 구 선택 --</option>'));
+    $('#bjdList').append($('<option class="bjdOption" value="0">-- 읍, 면, 동 선택 --</option>'));
+    let adm = data.admVOList.admVOList;
+    for (let i = 0; i < adm.length; i++) {
+      let sggHtml = $("<option></option>");
+      sggHtml.attr('value', adm[i].admCode);
+      sggHtml.attr('class', 'sggOption');
+      sggHtml.append(adm[i].lowestAdmCodeNm);
+      $('#sggList').append(sggHtml);
+    }
+  },
+  error : function(xhr, stat, err) {}
 });
 
 ```
